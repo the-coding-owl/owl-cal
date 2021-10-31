@@ -1,0 +1,31 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+    <f:section name="main">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th><f:translate key="calendar.day.mo" /></th>
+                    <th><f:translate key="calendar.day.tu" /></th>
+                    <th><f:translate key="calendar.day.we" /></th>
+                    <th><f:translate key="calendar.day.th" /></th>
+                    <th><f:translate key="calendar.day.fr" /></th>
+                    <th><f:translate key="calendar.day.sa" /></th>
+                    <th><f:translate key="calendar.day.su" /></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="day in week">
+                    <td>
+                        <span class="card" v-for="event in day.events">
+                            <span class="card-body">
+                                <span class="card-title">{{ event.title }}</span>
+                                <span class="card-text">{{ event.description }}</span>
+                                <a class="btn btn-primary" v-on:click="edit" title="{f:translate(key: 'event.edit')}"><i class="bi bi-pencil"></i></a>
+                            </span>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </f:section>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" date="2021-10-29T21:30:00Z" product-name="owl_cal">
+        <header/>
+        <body>
+            <trans-unit id="calendar.day.mo">
+                Monday
+            </trans-unit>
+            <trans-unit id="calendar.day.tu">
+                Tuesday
+            </trans-unit>
+            <trans-unit id="calendar.day.we">
+                Wednesday
+            </trans-unit>
+            <trans-unit id="calendar.day.th">
+                Thursday
+            </trans-unit>
+            <trans-unit id="calendar.day.fr">
+                Friday
+            </trans-unit>
+            <trans-unit id="calendar.day.sa">
+                Saturday
+            </trans-unit>
+            <trans-unit id="calendar.day.su">
+                Sunday
+            </trans-unit>
+            <trans-unit id="event.edit">
+                Edit event
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

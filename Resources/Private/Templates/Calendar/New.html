@@ -1,0 +1,10 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+    <f:layout name="Default" />
+    <f:section name="main">
+        <h1><f:translate key="calendar.new.title" /></h1>
+        <f:form name="calendar" action="create" object="{calendar}">
+            <f:render partial="Calendar/FormFields" section="main" arguments="{calendar: calendar}" />
+            <f:form.submit value="{f:translate(key:'calendar.new.button')}" />
+        </f:form>
+    </f:section>
+</html>

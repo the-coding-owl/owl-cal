@@ -1,0 +1,35 @@
+{
+    "name": "the-coding-owl/owl-cal",
+    "description": "A calendar app",
+    "type": "typo3-cms-extension",
+    "require": {
+        "typo3/cms-core": "^11.5.1",
+        "typo3/cms-extbase": "^11.5.1",
+        "typo3/cms-fluid": "^11.5.1"
+    },
+    "keywords": ["typo3", "calendar"],
+    "homepage": "https://github.com/the-coding-owl/owl-cal",
+    "support": {
+        "issues": "https://github.com/the-coding-owl/owl-cal/issues",
+        "source": "https://github.com/the-coding-owl/owl-cal"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^0.12.18",
+        "saschaegerer/phpstan-typo3": "^0.13.1",
+        "phpstan/extension-installer": "^1.0",
+        "squizlabs/php_codesniffer": "^3.5"
+    },
+    "license": "GPL-3.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "TheCodingOwl\\OwlCal\\": "Classes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kevin Ditscheid",
+            "email": "kevin@the-coding-owl.de",
+            "role": "owner"
+        }
+    ]
+}
