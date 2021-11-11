@@ -1,5 +1,20 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
     <f:section name="main">
-        <f:form.textfield property="title" />
+        <div class="row mb-3">
+            <div class="col-12">
+                <label class="form-label" for="owl-cal-calendar-title"><f:translate key="calendar.title" /></label>
+                <f:form.textfield class="form-control" errorClass="is-invalid" id="owl-cal-calendar-title" property="title" />
+                <f:render partial="FieldError" section="field" arguments="{property: 'calendar.title'}" />
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="owl-cal-calendar-owner"><f:translate key="calendar.owner" /></label>
+                <f:form.select class="form-select" disabled="TRUE" options="{0: owner}" prependOptionLabel="{f:translate(key:'calendar.owner.choose')" optionLabelField="username" />
+                <f:render partial="FieldError" section="field" arguments="{property: 'calendar.owner'}" />
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="owl-cal-calendar-color"><f:translate key="calendar.color" /></label>
+                <f:form.textfield class="form-control" type="color" id="owl-cal-calendar-color" property="color" /> 
+            </div>
+        </div>
     </f:section>
 </html>

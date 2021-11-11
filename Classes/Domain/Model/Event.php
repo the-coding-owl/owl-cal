@@ -317,4 +317,26 @@ class Event extends AbstractEntity {
         $this->calendar = $calendar;
         return $this;
     }
+
+    /**
+     * Create an array representation of the event
+     * 
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'uid' => $this->uid,
+            'place' => $this->place,
+            'recurring' => $this->recurring,
+            'starttime' => $this->starttime->format('r'),
+            'endtime' => $this->endtime->format('r'),
+            'timezone' => $this->timezone->getName(),
+            'wholeDay' => $this->wholeDay,
+            'status' => $this->status->getValue(),
+            'wwwAddress' => (string) $this->wwwAddress,
+            'description' => $this->description,
+            'calendar' => $this->calendar->getUid()
+        ];
+    }
 }

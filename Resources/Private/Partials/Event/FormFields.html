@@ -1,3 +1,61 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-
+    <f:section name="main">
+        <div class="row mb-3">
+            <div class="col-12">
+                <label class="form-label" for="owl-cal-event-title"><f:translate key="event.title" /></label>
+                <f:form.textfield class="form-control" id="owl-cal-event-title" property="title" />
+                <f:render partial="FieldError" section="field" arguments="{property: 'event.title'}" />
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="owl-cal-event-place"><f:translate key="event.place" /></label>
+                <f:form.textfield class="form-control" id="owl-cal-event-place" property="place" />
+                <f:render partial="FieldError" section="field" arguments="{property: 'event.place'}" />
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="owl-cal-event-description"><f:translate key="event.description" /></label>
+                <f:form.textarea class="form-control" id="owl-cal-event-description" property="description" />
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="owl-cal-event-startdate"><f:translate key="event.startdate" /></label>
+                <f:form.textfield class="form-control" type="date" id="owl-cal-event-startdate" property="startdate" />
+                <f:render partial="FieldError" section="field" arguments="{property: 'event.startdate'}" />
+            </div>
+            <div class="col-2">
+                <label class="form-label" for="owl-cal-event-starttime"><f:translate key="event.starttime" /></label>
+                <f:form.textfield class="form-control" type="time" id="owl-cal-event-starttime" property="starttime" />
+                <f:render partial="FieldError" section="field" arguments="{property: 'event.starttime'}" />
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="owl-cal-event-enddate"><f:translate key="event.enddate" /></label>
+                <f:form.textfield class="form-control" type="date" id="owl-cal-event-enddate" property="enddate" />
+                <f:render partial="FieldError" section="field" arguments="{property: 'event.enddate'}" />
+            </div>
+            <div class="col-2">
+                <label class="form-label" for="owl-cal-event-endtime"><f:translate key="event.endtime" /></label>
+                <f:form.textfield class="form-control" type="time" id="owl-cal-event-endtime" property="endtime" />
+                <f:render partial="FieldError" section="field" arguments="{property: 'event.endtime'}" />
+            </div>
+            <div class="col-2">
+                <f:form.checkbox class="form-check-input" property="wholeDay" id="owl-cal-event-wholeDay" />
+                <label class="form-check-label" for="owl-cal-event-wholeDay"><f:translate key="event.wholeDay" /></label>
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="owl-cal-event-timezone"><f:translate key="event.timezone" /></label>
+                <f:form.select class="form-select" options="{timezones}" property="timezone" id="owl-cal-event-timezone" />
+            </div>
+            <div class="col-12">
+                <f:form.checkbox class="form-check-input" property="recurring" id="owl-cal-event-recurring" />
+                <label class="form-check-label" for="owl-cal-event-recurring"><f:translate key="event.recurring" /></label>
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="owl-cal-event-status"><f:translate key="event.status" /></label>
+                <f:form.select class="form-select" options="{status}" property="status" id="owl-cal-event-status" />
+                <f:render partial="FieldError" section="field" arguments="{property: 'event.status'}" />
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="owl-cal-event-wwwaddress"><f:translate key="event.wwwAddress" /></label>
+                <f:form.textfield class="form-control" id="owl-cal-event-wwwaddress" property="wwwAddress" />
+            </div>
+        </div>
+    </f:section>
 </html>

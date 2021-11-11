@@ -22,7 +22,8 @@ return [
         'recordType' => \TheCodingOwl\OwlCal\Domain\Model\User::class,
         'properties' => [
             'username' => [
-                'fieldName' => 'username'
+                'fieldName' => 'username',
+                'email' => 'email'
             ]
         ]
     ]

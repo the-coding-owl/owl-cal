@@ -30,6 +30,12 @@ class User extends AbstractEntity {
     /**
      * @var string
      * @Validate("NotEmpty")
+     */
+    protected string $email;
+
+    /**
+     * @var string
+     * @Validate("NotEmpty")
      * @Validate("Password")
      */
     protected string $password;
@@ -45,6 +51,17 @@ class User extends AbstractEntity {
         return $this->username;
     }
 
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -54,5 +71,14 @@ class User extends AbstractEntity {
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'uid' => $this->uid,
+            'username' => $this->username,
+            'email' => $this->email
+        ];
     }
 }

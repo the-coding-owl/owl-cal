@@ -22,6 +22,7 @@ use TheCodingOwl\OwlCal\Domain\Model\Calendar;
 use TheCodingOwl\OwlCal\Domain\Repository\CalendarRepository;
 use TheCodingOwl\OwlCal\Domain\Repository\UserRepository;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -49,6 +50,16 @@ class CalendarController extends ActionController {
     }
 
     /**
+     * Index action
+     * 
+     * @return ResponseInterface
+     */
+    public function indexAction(): ResponseInterface 
+    {
+        return new HtmlResponse($this->view->render());
+    }
+
+    /**
      * Show the given calendar
      * 
      * @param Calendar $calendar The calendar to show
@@ -56,6 +67,10 @@ class CalendarController extends ActionController {
      */
     public function showAction(Calendar $calendar): ResponseInterface
     {
+        if ($this->request->getFormat() === 'json') {
+            return new JsonResponse(['calendar' => $calendar->toArray()]);
+        }
+
         $this->view->assign('calendar', $calendar);
         return new HtmlResponse($this->view->render());
     }
@@ -69,6 +84,8 @@ class CalendarController extends ActionController {
      */
     public function newAction(Calendar $calendar = null): ResponseInterface
     {
+        $owner = $this->userRepository->findCurrentUser();
+        $this->view->assign('owner', $owner);
         $this->view->assign('calendar', $calendar);
         return new HtmlResponse($this->view->render());
     }
@@ -81,11 +98,15 @@ class CalendarController extends ActionController {
      */
     public function createAction(Calendar $calendar): ResponseInterface
     {
+        $this->calendarRepository->add($calendar);
+        if ($this->request->getFormat() === 'json') {
+            return new JsonResponse(['calendar' => $calendar]);
+        }
+
         $this->addFlashMessage(
             LocalizationUtility::translate('calendar.create.success'), 
             LocalizationUtility::translate('calendar.create.success.title')
         );
-        $this->calendarRepository->add($calendar);
         return new RedirectResponse($this->uriBuilder->uriFor(
             'list', 
             [], 
@@ -103,6 +124,10 @@ class CalendarController extends ActionController {
     public function listAction(): ResponseInterface
     {
         $calendars = $this->calendarRepository->findByOwner($this->userRepository->findCurrentUser());
+        if ($this->request->getFormat() === 'json') {
+            return new JsonResponse((array) $calendars);
+        }
+
         $this->view->assign('calendars', $calendars);
         return new HtmlResponse($this->view->render());
     }
@@ -128,11 +153,14 @@ class CalendarController extends ActionController {
      */
     public function saveAction(Calendar $calendar): ResponseInterface
     {
+        $this->calendarRepository->update($calendar);
+        if ($this->request->getFormat() === 'json') {
+            return new JsonResponse($calendar->toArray());
+        }
         $this->addFlashMessage(
             LocalizationUtility::translate('calendar.save.success'), 
             LocalizationUtility::translate('calendar.save.success.title')
         );
-        $this->calendarRepository->update($calendar);
         return new RedirectResponse($this->uriBuilder->uriFor(
             'list', 
             [], 

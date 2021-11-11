@@ -3,7 +3,7 @@
     <f:section name="main">
         <h1><f:translate key="calendar.new.title" /></h1>
         <f:form name="calendar" action="create" object="{calendar}">
-            <f:render partial="Calendar/FormFields" section="main" arguments="{calendar: calendar}" />
+            <f:render partial="Calendar/FormFields" section="main" arguments="{calendar: calendar, owner: owner}" />
             <f:form.submit value="{f:translate(key:'calendar.new.button')}" />
         </f:form>
     </f:section>

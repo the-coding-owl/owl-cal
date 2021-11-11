@@ -22,12 +22,11 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}
           ${{ runner.os }}-build-
           ${{ runner.os }}-
-            
-    - name: Composer install
-      uses: php-actions/composer@v1
 
-    - name: Composer require typo3/cms-dashboard
-      uses: ./.github/actions/install-typo3-cms-dashboard
+    - name: Composer install
+      uses: php-actions/composer@v6
+      with:
+        php_version: 8.0
 
     - name: Run phpstan
       uses: ./.github/actions/run-phpstan

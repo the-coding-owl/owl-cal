@@ -19,6 +19,7 @@ namespace TheCodingOwl\OwlCal\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 
 /**
  * Calendar model
@@ -32,8 +33,14 @@ class Calendar extends AbstractEntity {
     protected string $title = '';
 
     /**
+     * @var string
+     */
+    protected string $color = '';
+
+    /**
      * @var Event[]
      * @Validate("NotEmpty")
+     * @Lazy
      */
     protected array $events = [];
 
@@ -63,6 +70,28 @@ class Calendar extends AbstractEntity {
     public function setTitle(string $title): self 
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Get the color
+     *
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return $this->color;
+    }
+
+    /**
+     * Set the color
+     * 
+     * @param string $color
+     * @return self
+     */
+    public function setColor(string $color): self
+    {
+        $this->color = $color;
         return $this;
     }
 
@@ -109,4 +138,33 @@ class Calendar extends AbstractEntity {
         $this->owner = $owner;
         return $this;
     }
-}
+
+    /**
+     * Create an array out of this object
+     * 
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'uid' => $this->uid,
+            'title' => $this->title,
+            'events' => $this->getEventsArray(),
+            'owner' => $this->owner->toArray()
+        ];
+    }
+
+    /**
+     * Get the events as their array representations
+     *
+     * @return array
+     */
+    public function getEventsArray(): array
+    {
+        $events = [];
+        foreach ($this->events as $event) {
+            $events[] = $event->toArray();
+        }
+        return $events;
+    }
+} 

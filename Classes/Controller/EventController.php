@@ -23,6 +23,7 @@ use TheCodingOwl\OwlCal\Domain\Model\Event;
 use TheCodingOwl\OwlCal\Domain\Repository\EventRepository;
 use TheCodingOwl\OwlCal\Domain\Repository\UserRepository;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -51,6 +52,40 @@ class EventController extends ActionController {
     }
 
     /**
+     * Show the given event
+     * 
+     * @param Event $event
+     * @return ResponseInterface
+     */
+    public function showAction(Event $event): ResponseInterface
+    {
+        if ($this->request->getFormat() === 'json') {
+            return new JsonResponse($event->toArray());
+        }
+
+        $this->view->assign('event', $event);
+        return new HtmlResponse($this->view->render());
+    }
+
+    /**
+     * List events from a given calendar
+     * 
+     * @param Calendar $calendar
+     * @return ResponseInterface
+     */
+    public function listAction(Calendar $calendar): ResponseInterface
+    {
+        $events = $this->eventRepository->findByCalendar($calendar);
+        if ($this->request->getFormat() === 'json') {
+            return new JsonResponse((array) $events);
+        }
+
+        $this->view->assign('events', $events);
+        $this->view->assign('calendar', $calendar);
+        return new HtmlResponse($this->view->render());
+    }
+
+    /**
      * Show the form for creating new events
      * 
      * @param Calendar $calendar The calendar to use for the new event
@@ -73,11 +108,14 @@ class EventController extends ActionController {
      */
     public function createAction(Event $event): ResponseInterface
     {
+        $this->eventRepository->add($event);
+        if ($this->request->getFormat() === 'json') {
+            return new JsonResponse($event->toArray());
+        }
         $this->addFlashMessage(
             LocalizationUtility::translate('event.create.success'), 
             LocalizationUtility::translate('event.create.success.title')
         );
-        $this->eventRepository->add($event);
         return new RedirectResponse($this->uriBuilder->uriFor(
             'show', 
             ['calendar' => $event->getCalendar()->getUid()], 
@@ -108,11 +146,14 @@ class EventController extends ActionController {
      */
     public function saveAction(Event $event): ResponseInterface
     {
+        $this->eventRepository->update($event);
+        if ($this->request->getFormat() === 'json') {
+            return new JsonResponse($event->toArray());
+        }
         $this->addFlashMessage(
             LocalizationUtility::translate('event.save.success'), 
             LocalizationUtility::translate('event.save.success.title')
         );
-        $this->eventRepository->update($event);
         return new RedirectResponse($this->uriBuilder->uriFor(
             'show', 
             ['calendar' => $event->getCalendar()->getUid()], 
