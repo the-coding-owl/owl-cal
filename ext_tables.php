@@ -2,12 +2,12 @@
 
 (static function($extKey) {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        $extKey, 
-        'cal', 
-        'tx_owlcal', 
-        '', 
+        $extKey,
+        'web', 
+        'tx_owlcal',
+        '',
         [
-            \TheCodingOwl\OwlCal\Controller\CalendarController::class => 'list,new,edit,create,save', 
+            \TheCodingOwl\OwlCal\Controller\CalendarController::class => 'list,new,edit,create,save',
             \TheCodingOwl\OwlCal\Domain\Model\Event::class => 'new,edit,create,save'
         ],
         [
