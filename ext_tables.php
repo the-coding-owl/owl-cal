@@ -13,7 +13,7 @@
         [
             'access' => 'user,group',
             'iconIdentifier' => 'owl-cal-extension',
-            'labels' => 'LLL:EXT:'. $extKey . '/Resources/Private/language_mod.xlf',
+            'labels' => 'LLL:EXT:'. $extKey . '/Resources/Private/locallang_mod.xlf',
             'navigationComponentId' => '', // TODO: Create a custom implementation for viewing different calendars
             'inheritNavigationComponentFromMainModule' => false
         ]
