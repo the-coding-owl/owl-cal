@@ -19,6 +19,7 @@ namespace TheCodingOwl\OwlCal\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TheCodingOwl\OwlCal\Domain\Model\Calendar;
+use TheCodingOwl\OwlCal\Domain\Model\Dto\ICS;
 use TheCodingOwl\OwlCal\Domain\Repository\CalendarRepository;
 use TheCodingOwl\OwlCal\Domain\Repository\UserRepository;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -161,6 +162,22 @@ class CalendarController extends ActionController {
             LocalizationUtility::translate('calendar.save.success'), 
             LocalizationUtility::translate('calendar.save.success.title')
         );
+        return new RedirectResponse($this->uriBuilder->uriFor(
+            'list', 
+            [], 
+            $this->request->getControllerName(), 
+            $this->request->getControllerExtensionName(), 
+            $this->request->getPluginName()
+        ));
+    }
+
+    public function importAction(ICS $calendar)
+    {
+        $newCalendar = $this->calendarRepository->import($calendar);
+        if ($this->request->getFormat() === 'json') {
+            return new JsonResponse($newCalendar->toArray());
+        }
+        $this->addFlashMessage('New calendar imported successfully');
         return new RedirectResponse($this->uriBuilder->uriFor(
             'list', 
             [], 

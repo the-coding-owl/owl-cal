@@ -17,7 +17,10 @@
 
 namespace TheCodingOwl\OwlCal\Domain\Repository;
 
+use TheCodingOwl\OwlCal\Domain\Model\Calendar;
+use TheCodingOwl\OwlCal\Domain\Model\Dto\ICS;
 use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * Repository class for calendars
@@ -27,11 +30,25 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class CalendarRepository extends Repository {
     /**
      * Overwrite the createQuery function to disable storage page respect
+     * 
+     * @return QueryInterface
      */
     public function createQuery()
     {
         $query = parent::createQuery();
         $query->getQuerySettings()->setRespectStoragePage(false);
         return $query;
+    }
+
+    /**
+     * Import a new calendar by the given ics file
+     * 
+     * @param ICS $icsFile A converted ics file
+     * @return Calendar
+     */
+    public function import(ICS $icsFile): Calendar
+    {
+        // TODO: Write import logic
+        return new Calendar();
     }
 }
