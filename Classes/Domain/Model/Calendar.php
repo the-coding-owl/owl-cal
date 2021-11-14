@@ -47,13 +47,13 @@ class Calendar extends AbstractEntity {
     /**
      * @var User
      * @Validate("NotEmpty")
-     * @Validate("\TheCodingOwl\OwlCal\Validation\Validator\UserPermissionValidator")
+     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\UserPermissionValidator")
      */
     protected User $owner;
 
     /**
      * Get the title
-     * 
+     *
      * @return string
      */
     public function getTitle(): string
@@ -63,11 +63,11 @@ class Calendar extends AbstractEntity {
 
     /**
      * Set the title
-     * 
+     *
      * @param string $title
      * @return self
      */
-    public function setTitle(string $title): self 
+    public function setTitle(string $title): self
     {
         $this->title = $title;
         return $this;
@@ -85,7 +85,7 @@ class Calendar extends AbstractEntity {
 
     /**
      * Set the color
-     * 
+     *
      * @param string $color
      * @return self
      */
@@ -97,7 +97,7 @@ class Calendar extends AbstractEntity {
 
     /**
      * Get the events
-     * 
+     *
      * @return array
      */
     public function getEvents(): array
@@ -107,7 +107,7 @@ class Calendar extends AbstractEntity {
 
     /**
      * Set the events
-     * 
+     *
      * @param Event[] $events
      * @return self
      */
@@ -141,7 +141,7 @@ class Calendar extends AbstractEntity {
 
     /**
      * Create an array out of this object
-     * 
+     *
      * @return array
      */
     public function toArray(): array
@@ -167,4 +167,4 @@ class Calendar extends AbstractEntity {
         }
         return $events;
     }
-} 
+}

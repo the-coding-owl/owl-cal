@@ -36,7 +36,7 @@ class User extends AbstractEntity {
     /**
      * @var string
      * @Validate("NotEmpty")
-     * @Validate("Password")
+     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\PasswordValidator")
      */
     protected string $password;
 
