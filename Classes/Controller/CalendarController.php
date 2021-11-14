@@ -27,10 +27,11 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 
 /**
  * Controller class for the calendar objects
- * 
+ *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
 class CalendarController extends ActionController {
@@ -52,17 +53,17 @@ class CalendarController extends ActionController {
 
     /**
      * Index action
-     * 
+     *
      * @return ResponseInterface
      */
-    public function indexAction(): ResponseInterface 
+    public function indexAction(): ResponseInterface
     {
         return new HtmlResponse($this->view->render());
     }
 
     /**
      * Show the given calendar
-     * 
+     *
      * @param Calendar $calendar The calendar to show
      * @return ResponseInterface
      */
@@ -78,7 +79,7 @@ class CalendarController extends ActionController {
 
     /**
      * Show the new form for creating a new calendar
-     * 
+     *
      * @param Calendar|null $calendar The calendar to create
      * @IgnoreValidation(argumentName="calendar")
      * @return ResponseInterface
@@ -93,7 +94,7 @@ class CalendarController extends ActionController {
 
     /**
      * Persist the given calendar
-     * 
+     *
      * @param Calendar $calendar The calendar to persist
      * @return ResponseInterface
      */
@@ -105,21 +106,21 @@ class CalendarController extends ActionController {
         }
 
         $this->addFlashMessage(
-            LocalizationUtility::translate('calendar.create.success'), 
+            LocalizationUtility::translate('calendar.create.success'),
             LocalizationUtility::translate('calendar.create.success.title')
         );
         return new RedirectResponse($this->uriBuilder->uriFor(
-            'list', 
-            [], 
-            $this->request->getControllerName(), 
-            $this->request->getControllerExtensionName(), 
+            'list',
+            [],
+            $this->request->getControllerName(),
+            $this->request->getControllerExtensionName(),
             $this->request->getPluginName()
         ));
     }
 
     /**
      * List all calendars of the current user
-     * 
+     *
      * @return ResponseInterface
      */
     public function listAction(): ResponseInterface
@@ -135,7 +136,7 @@ class CalendarController extends ActionController {
 
     /**
      * Show the form for editing the given calendar
-     * 
+     *
      * @param Calendar $calendar The calendar to edit
      * @IgnoreValidation(argumentName="calendar")
      * @return ResponseInterface
@@ -148,7 +149,7 @@ class CalendarController extends ActionController {
 
     /**
      * Persist the changed calendar
-     * 
+     *
      * @param Calendar $calendar The calendar to persist
      * @return ResponseInterface
      */
@@ -159,14 +160,14 @@ class CalendarController extends ActionController {
             return new JsonResponse($calendar->toArray());
         }
         $this->addFlashMessage(
-            LocalizationUtility::translate('calendar.save.success'), 
+            LocalizationUtility::translate('calendar.save.success'),
             LocalizationUtility::translate('calendar.save.success.title')
         );
         return new RedirectResponse($this->uriBuilder->uriFor(
-            'list', 
-            [], 
-            $this->request->getControllerName(), 
-            $this->request->getControllerExtensionName(), 
+            'list',
+            [],
+            $this->request->getControllerName(),
+            $this->request->getControllerExtensionName(),
             $this->request->getPluginName()
         ));
     }
@@ -179,10 +180,10 @@ class CalendarController extends ActionController {
         }
         $this->addFlashMessage('New calendar imported successfully');
         return new RedirectResponse($this->uriBuilder->uriFor(
-            'list', 
-            [], 
-            $this->request->getControllerName(), 
-            $this->request->getControllerExtensionName(), 
+            'list',
+            [],
+            $this->request->getControllerName(),
+            $this->request->getControllerExtensionName(),
             $this->request->getPluginName()
         ));
     }
