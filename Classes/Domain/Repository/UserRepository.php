@@ -30,6 +30,8 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class UserRepository extends Repository {
     /**
      * Find the currently logged in user
+     *
+     * @return User
      */
     public function findCurrentUser(): User
     {
@@ -42,7 +44,7 @@ class UserRepository extends Repository {
 
     /**
      * Get the Backend user object aka $GLOBALS['BE_USER']
-     * 
+     *
      * @return BackendUserAuthentication
      */
     protected function getBackendUser(): BackendUserAuthentication
