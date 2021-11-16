@@ -25,6 +25,7 @@ use TheCodingOwl\OwlCal\Domain\Repository\UserRepository;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
@@ -36,6 +37,11 @@ use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
  */
 class CalendarController extends ActionController {
     /**
+     * @var PageRenderer
+     */
+    protected PageRenderer $pageRenderer;
+
+    /**
      * @var CalendarRepository
      */
     protected CalendarRepository $calendarRepository;
@@ -45,8 +51,13 @@ class CalendarController extends ActionController {
      */
     protected UserRepository $userRepository;
 
-    public function __construct(CalendarRepository $calendarRepository, UserRepository $userRepository)
+    public function __construct(
+        PageRenderer $pageRenderer,
+        CalendarRepository $calendarRepository,
+        UserRepository $userRepository
+    )
     {
+        $this->pageRenderer = $pageRenderer;
         $this->calendarRepository = $calendarRepository;
         $this->userRepository = $userRepository;
     }
@@ -58,7 +69,8 @@ class CalendarController extends ActionController {
      */
     public function indexAction(): ResponseInterface
     {
-        return new HtmlResponse($this->view->render());
+        $this->pageRenderer->setBodyContent($this->view->render());
+        return $this->htmlResponse($this->pageRenderer->render());
     }
 
     /**
