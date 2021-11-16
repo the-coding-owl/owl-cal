@@ -4,12 +4,12 @@
             <button class="btn btn-primary dropdown-toggle" type="button">{{ calendar.title }}<i class="bi bi-calendar"></i></button>
             <ul class="dropdown-menu">
                 <li v-for="calendar in calendars">
-                    <a href="{f:link.action(action: 'edit', controller:'Calendar', arguments: '{calendar: calendar}')}"
+                    <a href="{f:uri.action(action: 'edit', controller:'Calendar', arguments: '{calendar: calendar}')}"
                     class="dropdown-item"
                     v-on:click="changeCalendar(calendar.uid)">{{ calendar.title }}</a>
                 </li>
                 <li class="dropdown-item">
-                    <a href="{f:link.action(action: 'new', controller: 'Calendar')}"
+                    <a href="{f:uri.action(action: 'new', controller: 'Calendar')}"
                     class="dropdown-item"
                     v-on:click="newCalendar"><i class="bi bi-calendar-plus"></i></a>
                 </li>
@@ -17,29 +17,29 @@
         </div>
         <ul class="nav">
             <li class="nav-item">
-                <a href="{f:link.action(action: 'list', controller: 'Event', arguments: '{calendar: calendar, view: 'next'}')}"
+                <a href="{f:uri.action(action: 'list', controller: 'Event', arguments: '{calendar: calendar, view: 'next'}')}"
                 class="nav-link"
                 v-on:click="viewEvents"><i class="bi bi-calendar-event"></i></a>
             </li>
             <li class="nav-item">
-                <a href="{f:link.action(action: 'list', controller: 'Event', arguments: '{calendar: calendar, view: 'day'}')}"
+                <a href="{f:uri.action(action: 'list', controller: 'Event', arguments: '{calendar: calendar, view: 'day'}')}"
                 class="nav-link"
                 v-on:click="viewDay"><i class="bi bi-calendar-day"></i></a>
             </li>
             <li class="nav-item">
-                <a href="{f:link.action(action: 'list', controller: 'Event', arguments: '{calendar: calendar, view: 'week'}')}"
+                <a href="{f:uri.action(action: 'list', controller: 'Event', arguments: '{calendar: calendar, view: 'week'}')}"
                 class="nav-link"
                 v-on:click="viewWeek"><i class="bi bi-calendar-week"></i></a>
             </li>
             <li class="nav-item">
-                <a href="{f:link.action(action: 'list', controller: 'Event', arguments: '{calendar: calendar, view: 'month'}')}"
+                <a href="{f:uri.action(action: 'list', controller: 'Event', arguments: '{calendar: calendar, view: 'month'}')}"
                 class="nav-link"
                 v-on:click="viewMonth"><i class="bi bi-calendar-month"></i></a>
             </li>
         </ul>
         <ul class="nav">
             <li class="nav-item">
-                <a href="{f:link.action(action: 'new', controller: 'Event', arguments: '{calendar: calendar}')}"
+                <a href="{f:uri.action(action: 'new', controller: 'Event', arguments: '{calendar: calendar}')}"
                 class="nav-link"
                 v-on:click="newEvent"><i class="bi bi-calendar-plus"></i></a>
             </li>

@@ -2,10 +2,22 @@
     <f:layout name="Vue" />
 
     <f:section name="main">
-        <f:render partial="Calendar/Vue/Actions" section="main" />
-        <f:render partial="Calendar/Vue/Day" section="main" />
-        <f:render partial="Calendar/Vue/Week" section="main" />
-        <f:render partial="Calendar/Vue/Month" section="main" />
-        <f:render partial="Calendar/Vue/Next" section="main" />
+        <div class="container">
+            <div class="row">
+                <f:render partial="Calendar/Vue/Actions" section="main" />
+            </div>
+            <div id="owl-cal-daily" class="row">
+                <f:render partial="Calendar/Vue/Day" section="main" />
+            </div>
+            <div id="owl-cal-weekly" class="row">
+                <f:render partial="Calendar/Vue/Week" section="main" />
+            </div>
+            <div id="owl-cal-monthly" class="row">
+                <f:render partial="Calendar/Vue/Month" section="main" />
+            </div>
+            <div id="owl-cal-next" class="row">
+                <f:render partial="Calendar/Vue/Next" section="main" />
+            </div>
+        </div>
     </f:section>
 </html>
