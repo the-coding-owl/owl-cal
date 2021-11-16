@@ -20,6 +20,7 @@ namespace TheCodingOwl\OwlCal\Domain\Model;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Calendar model
@@ -38,18 +39,22 @@ class Calendar extends AbstractEntity {
     protected string $color = '';
 
     /**
-     * @var Event[]
-     * @Validate("NotEmpty")
+     * @var ObjectStorage<Event>
      * @Lazy
      */
-    protected array $events = [];
+    protected $events;
 
     /**
-     * @var User
+     * @var int
      * @Validate("NotEmpty")
      * @Validate("TheCodingOwl\OwlCal\Validation\Validator\UserPermissionValidator")
      */
-    protected User $owner;
+    protected int $owner = 0;
+
+    public function __construct()
+    {
+        $this->events = new ObjectStorage();
+    }
 
     /**
      * Get the title
@@ -98,9 +103,9 @@ class Calendar extends AbstractEntity {
     /**
      * Get the events
      *
-     * @return array
+     * @return ObjectStorage
      */
-    public function getEvents(): array
+    public function getEvents(): ObjectStorage
     {
         return $this->events;
     }
@@ -108,10 +113,10 @@ class Calendar extends AbstractEntity {
     /**
      * Set the events
      *
-     * @param Event[] $events
+     * @param ObjectStorage $events
      * @return self
      */
-    public function setEvents(array $events): self
+    public function setEvents(ObjectStorage $events): self
     {
         $this->events = $events;
         return $this;
@@ -120,9 +125,9 @@ class Calendar extends AbstractEntity {
     /**
      * Get the owner
      *
-     * @return User
+     * @return int
      */
-    public function getOwner(): User
+    public function getOwner(): int
     {
         return $this->owner;
     }
@@ -130,13 +135,24 @@ class Calendar extends AbstractEntity {
     /**
      * Set the owner
      *
-     * @param User $owner
+     * @param int $owner
      * @return self
      */
-    public function setOwner(User $owner): self
+    public function setOwner(int $owner): self
     {
         $this->owner = $owner;
         return $this;
+    }
+
+    /**
+     * Check of the calendar is visible
+     *
+     * @return bool
+     * @TODO: Implement the actual logic
+     */
+    public function isVisible(): bool
+    {
+        return false;
     }
 
     /**
@@ -150,7 +166,7 @@ class Calendar extends AbstractEntity {
             'uid' => $this->uid,
             'title' => $this->title,
             'events' => $this->getEventsArray(),
-            'owner' => $this->owner->toArray()
+            'owner' => $this->owner
         ];
     }
 

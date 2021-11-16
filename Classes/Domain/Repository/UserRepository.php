@@ -20,6 +20,8 @@ namespace TheCodingOwl\OwlCal\Domain\Repository;
 use TheCodingOwl\OwlCal\Domain\Model\User;
 use TheCodingOwl\OwlCal\Exception\UserNotFoundException;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
@@ -29,17 +31,41 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class UserRepository extends Repository {
     /**
+     * @var DataMapper
+     */
+    protected DataMapper $dataMapper;
+
+    public function __construct(DataMapper $dataMapper, ObjectManagerInterface $objectManager)
+    {
+        parent::__construct($objectManager);
+        $this->dataMapper = $dataMapper;
+    }
+
+    /**
+     * Overwrite createQuery function to change the storage page respect
+     *
+     * @return QueryInterface
+     */
+    public function createQuery()
+    {
+        $query = parent::createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        return $query;
+    }
+
+    /**
      * Find the currently logged in user
      *
      * @return User
+     * @throws UserNotFoundException
      */
     public function findCurrentUser(): User
     {
-        $currentUser = $this->findByUid($this->getBackendUser()->user['uid']);
-        if ($currentUser === null) {
-            throw new UserNotFoundException('Current user could not be found!', 1001);
+        $currentUser = $this->dataMapper->map($this->objectType, [$this->getBackendUser()->user])[0];
+        if ($currentUser instanceof User) {
+            return $currentUser;
         }
-        return $currentUser;
+        throw new UserNotFoundException('Current user could not be found!', 1001);
     }
 
     /**

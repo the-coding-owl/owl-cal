@@ -2,18 +2,30 @@
     <f:section name="main">
         <div class="row mb-3">
             <div class="col-12">
-                <label class="form-label" for="owl-cal-calendar-title"><f:translate key="calendar.title" /></label>
+                <label class="form-label" for="owl-cal-calendar-title">
+                    <f:translate key="calendar.title" />
+                </label>
                 <f:form.textfield class="form-control" errorClass="is-invalid" id="owl-cal-calendar-title" property="title" />
                 <f:render partial="FieldError" section="field" arguments="{property: 'calendar.title'}" />
             </div>
             <div class="col-12">
-                <label class="form-label" for="owl-cal-calendar-owner"><f:translate key="calendar.owner" /></label>
-                <f:form.select class="form-select" disabled="TRUE" options="{0: owner}" prependOptionLabel="{f:translate(key:'calendar.owner.choose')" optionLabelField="username" />
+                <label class="form-label" for="owl-cal-calendar-owner">
+                    <f:translate key="calendar.owner" />
+                </label>
+                <f:form.select class="form-select"
+                               property="owner"
+                               disabled="TRUE"
+                               options="{0: owner}"
+                               prependOptionLabel="{f:translate(key:'calendar.owner.choose',extensionName:'OwlCal')}"
+                               optionValueField="uid"
+                               optionLabelField="username" />
                 <f:render partial="FieldError" section="field" arguments="{property: 'calendar.owner'}" />
             </div>
             <div class="col-12">
-                <label class="form-label" for="owl-cal-calendar-color"><f:translate key="calendar.color" /></label>
-                <f:form.textfield class="form-control" type="color" id="owl-cal-calendar-color" property="color" /> 
+                <label class="form-label" for="owl-cal-calendar-color">
+                    <f:translate key="calendar.color" />
+                </label>
+                <f:form.textfield class="form-control" type="color" id="owl-cal-calendar-color" property="color" />
             </div>
         </div>
     </f:section>

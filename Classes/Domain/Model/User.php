@@ -25,20 +25,20 @@ class User extends AbstractEntity {
      * @var string
      * @Validate("NotEmpty")
      */
-    protected string $username;
+    protected string $username = '';
 
     /**
      * @var string
      * @Validate("NotEmpty")
      */
-    protected string $email;
+    protected string $email = '';
 
     /**
      * @var string
      * @Validate("NotEmpty")
      * @Validate("TheCodingOwl\OwlCal\Validation\Validator\PasswordValidator")
      */
-    protected string $password;
+    protected string $password = '';
 
     public function setUsername(string $username): self
     {

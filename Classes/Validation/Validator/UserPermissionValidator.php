@@ -17,9 +17,8 @@
 
 namespace TheCodingOwl\OwlCal\Validation\Validator;
 
-use TheCodingOwl\OwlCal\Domain\Model\Calendar;
 use TheCodingOwl\OwlCal\Domain\Repository\UserRepository;
-use TheCodingOwl\OwlCal\Exception\InvalidParameterTypeException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /**
@@ -32,24 +31,22 @@ class UserPermissionValidator extends AbstractValidator {
      * @var UserRepository
      */
     protected UserRepository $userRepository;
-    
-    public function __construct(UserRepository $userRepository)
+
+    public function __construct(array $options = [])
     {
-        $this->userRepository = $userRepository;
+        $this->userRepository = GeneralUtility::makeInstance(UserRepository::class);
+        parent::__construct($options);
     }
 
     /**
      * Check if the given value is valid
-     * 
-     * @param Calendar $value The Calendar to check
+     *
+     * @param int $value Uid of the user to check
      * @return void
      */
     public function isValid($value)
     {
-        if (!($value instanceof Calendar)) {
-            throw new InvalidParameterTypeException('The given value is not of type Calendar!', 1002);
-        }
-        if ($value->getOwner() !== $this->userRespository->findCurrentUser()) {
+        if ($value !== $this->userRepository->findCurrentUser()->getUid()) {
             $this->addError('The current user is not allowed to see this calendar!', 1003);
         }
     }

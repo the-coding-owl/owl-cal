@@ -3,29 +3,62 @@
     <file source-language="en" datatype="plaintext" date="2021-10-29T21:30:00Z" product-name="owl_cal">
         <header/>
         <body>
+            <trans-unit id="back">
+                <source>Back</source>
+            </trans-unit>
+            <trans-unit id="calendar.new">
+                <source>Create calendar</source>
+            </trans-unit>
             <trans-unit id="calendar.day.mo">
-                Monday
+                <source>Monday</source>
             </trans-unit>
             <trans-unit id="calendar.day.tu">
-                Tuesday
+                <source>Tuesday</source>
             </trans-unit>
             <trans-unit id="calendar.day.we">
-                Wednesday
+                <source>Wednesday</source>
             </trans-unit>
             <trans-unit id="calendar.day.th">
-                Thursday
+                <source>Thursday</source>
             </trans-unit>
             <trans-unit id="calendar.day.fr">
-                Friday
+                <source>Friday</source>
             </trans-unit>
             <trans-unit id="calendar.day.sa">
-                Saturday
+                <source>Saturday</source>
             </trans-unit>
             <trans-unit id="calendar.day.su">
-                Sunday
+                <source>Sunday</source>
+            </trans-unit>
+            <trans-unit id="calendar.title">
+                <source>Title</source>
+            </trans-unit>
+            <trans-unit id="calendar.owner">
+                <source>Owner</source>
+            </trans-unit>
+            <trans-unit id="calendar.owner.choose">
+                <source>Choose owner</source>
+            </trans-unit>
+            <trans-unit id="calendar.owner.choose">
+                <source>Choose owner</source>
+            </trans-unit>
+            <trans-unit id="calendar.color">
+                <source>Color</source>
+            </trans-unit>
+            <trans-unit id="calendar.save">
+                <source>Save calendar</source>
+            </trans-unit>
+            <trans-unit id="calendar.create.success">
+                <source>The calendar %s got created</source>
+            </trans-unit>
+            <trans-unit id="calendar.create.success.title">
+                <source>Creation successfull</source>
+            </trans-unit>
+            <trans-unit id="calendar.save">
+                <source>Save calendar</source>
             </trans-unit>
             <trans-unit id="event.edit">
-                Edit event
+                <source>Edit event</source>
             </trans-unit>
         </body>
     </file>

@@ -6,3 +6,6 @@ services:
 
   TheCodingOwl\OwlCal\:
     resource: '../Classes/*'
+
+  TheCodingOwl\OwlCal\Domain\Repository\UserRepository:
+    public: true

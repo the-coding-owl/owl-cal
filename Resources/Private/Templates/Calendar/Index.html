@@ -2,6 +2,7 @@
     <f:layout name="Vue" />
 
     <f:section name="main">
+
         <div class="container">
             <div class="row">
                 <f:render partial="Calendar/Vue/Actions" section="main" />
@@ -19,5 +20,13 @@
                 <f:render partial="Calendar/Vue/Next" section="main" />
             </div>
         </div>
+    </f:section>
+
+    <f:section name="navigation">
+        <ul class="nav flex-column">
+            <li class="nav-item" v-for="calendar in calendars">
+                <a @click="toggleCalendar(calendar)" class="nav-link"><i :style="{ color: calendar.color }" class="bi bi-calendar"></i>{{ calendar.title }}</a>
+            </li>
+        </ul>
     </f:section>
 </html>

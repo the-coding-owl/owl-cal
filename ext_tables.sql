@@ -15,7 +15,8 @@ CREATE TABLE tx_owlcal_domain_model_event (
 CREATE TABLE tx_owlcal_domain_model_calendar (
     title varchar(255) DEFAULT '' NOT NULL,
     events int(11) unsigned DEFAULT '0' NOT NULL,
-    owner int(11) unsigned DEFAULT '0' NOT NULL
+    owner int(11) unsigned DEFAULT '0' NOT NULL,
+    color varchar(7) DEFAULT '#000000' NOT NULL
 );
 
 CREATE TABLE tx_owlcal_domain_model_status (

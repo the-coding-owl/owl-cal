@@ -69,6 +69,15 @@ class CalendarController extends ActionController {
      */
     public function indexAction(): ResponseInterface
     {
+        if (!$this->settings['vue']['enable']) {
+            return new RedirectResponse($this->uriBuilder->uriFor(
+                'list',
+                [],
+                $this->request->getControllerName(),
+                $this->request->getControllerExtensionName(),
+                $this->request->getPluginName()
+            ));
+        }
         $this->pageRenderer->setBodyContent($this->view->render());
         return $this->htmlResponse($this->pageRenderer->render());
     }
@@ -101,7 +110,21 @@ class CalendarController extends ActionController {
         $owner = $this->userRepository->findCurrentUser();
         $this->view->assign('owner', $owner);
         $this->view->assign('calendar', $calendar);
-        return new HtmlResponse($this->view->render());
+        $this->pageRenderer->setBodyContent($this->view->render());
+        return $this->htmlResponse($this->pageRenderer->render());
+    }
+
+    /**
+     * Initialize the create function and force the user to the currently logged in user
+     */
+    public function initializeCreateAction(): void
+    {
+        if ($this->request->hasArgument('calendar')) {
+            $calendar = $this->request->getArgument('calendar');
+            $calendar['owner'] = $this->userRepository->findCurrentUser()->getUid();
+            $this->request->setArgument('calendar', $calendar);
+            $this->arguments->getArgument('calendar')->getPropertyMappingConfiguration()->allowAllProperties();
+        }
     }
 
     /**
@@ -118,8 +141,15 @@ class CalendarController extends ActionController {
         }
 
         $this->addFlashMessage(
-            LocalizationUtility::translate('calendar.create.success'),
-            LocalizationUtility::translate('calendar.create.success.title')
+            LocalizationUtility::translate(
+                'calendar.create.success',
+                $this->request->getControllerExtensionName(),
+                [$calendar->getTitle()]
+            ),
+            LocalizationUtility::translate(
+                'calendar.create.success.title',
+                $this->request->getControllerExtensionName()
+            )
         );
         return new RedirectResponse($this->uriBuilder->uriFor(
             'list',
@@ -137,13 +167,14 @@ class CalendarController extends ActionController {
      */
     public function listAction(): ResponseInterface
     {
-        $calendars = $this->calendarRepository->findByOwner($this->userRepository->findCurrentUser());
+        $currentUser = $this->userRepository->findCurrentUser();
+        $calendars = $this->calendarRepository->findByOwner($currentUser->getUid());
         if ($this->request->getFormat() === 'json') {
             return new JsonResponse((array) $calendars);
         }
-
         $this->view->assign('calendars', $calendars);
-        return new HtmlResponse($this->view->render());
+        $this->pageRenderer->setBodyContent($this->view->render());
+        return $this->htmlResponse($this->pageRenderer->render());
     }
 
     /**
@@ -172,8 +203,8 @@ class CalendarController extends ActionController {
             return new JsonResponse($calendar->toArray());
         }
         $this->addFlashMessage(
-            LocalizationUtility::translate('calendar.save.success'),
-            LocalizationUtility::translate('calendar.save.success.title')
+            LocalizationUtility::translate('calendar.save.success', $this->request->getControllerExtensionName()),
+            LocalizationUtility::translate('calendar.save.success.title', $this->request->getControllerExtensionName())
         );
         return new RedirectResponse($this->uriBuilder->uriFor(
             'list',

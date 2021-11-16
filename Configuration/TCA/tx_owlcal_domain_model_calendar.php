@@ -32,9 +32,15 @@ return [
         ],
         'events' => [
             'config' => [
+                'default' => 0,
                 'type' => 'inline',
                 'foreign_table' => 'tx_owlcal_domain_model_event',
                 'foreign_field' => 'calendar'
+            ]
+        ],
+        'color' => [
+            'config' => [
+                'type' => 'input'
             ]
         ],
         'owner' => [

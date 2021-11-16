@@ -1,4 +1,24 @@
-const options = {};
+const options = {
+    data() {
+        return {
+            calendars: {}
+        }
+    },
+    methods: {
+        toggleCalendar(calendar) {
 
-const app = Vue.createApp(options);
-const vm = app.mount('#owl-cal');
+        }
+    }
+};
+
+const calendarApp = Vue.createApp(options);
+calendarApp.component('navigation', {
+    data() {
+
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const vm = calendarApp.mount('#owl-cal');
+}, false);
+
