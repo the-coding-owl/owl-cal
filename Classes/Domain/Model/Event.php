@@ -17,15 +17,20 @@
 
 namespace TheCodingOwl\OwlCal\Domain\Model;
 
-use GuzzleHttp\Psr7\Uri;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Event model
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
 class Event extends AbstractEntity {
+    public const STATUS_NONE = 'none';
+    public const STATUS_TENTATIVE = 'tentative';
+    public const STATUS_CONFIRMED = 'confirmed';
+    public const STATUS_CANCELED = 'canceled';
+
     /**
      * @var string
      * @Validate("NotEmpty")
@@ -45,36 +50,51 @@ class Event extends AbstractEntity {
      */
     protected \DateTime $starttime;
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      */
-    protected \DateTime $endtime;
+    protected ?\DateTime $endtime = null;
     /**
-     * @var \DateTimeZone
+     * @var string
      * @Validate("NotEmpty")
+     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\DateTimeZoneValidator")
      */
-    protected \DateTimeZone $timezone;
+    protected string $timezone = '';
     /**
      * @var bool
      */
     protected bool $wholeDay = false;
     /**
-     * @var Status
+     * @var string
      * @Validate("NotEmpty")
+     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\StatusValidator")
      */
-    protected Status $status;
+    protected string $status = self::STATUS_TENTATIVE;
     /**
-     * @var Uri
+     * @var string
      */
-    protected Uri $wwwAddress;
+    protected string $wwwAddress = '';
     /**
      * @var string
      */
     protected string $description = '';
     /**
+     * @var string
+     */
+    protected string $icon = '';
+    /**
      * @var Calendar
      * @Validate("NotEmpty")
      */
     protected Calendar $calendar;
+    /**
+     * @var ObjectStorage<Attendee>
+     */
+    protected $attendees;
+
+    public function __construct()
+    {
+        $this->attendees = new ObjectStorage();
+    }
 
     /**
      * Get the title
@@ -88,7 +108,7 @@ class Event extends AbstractEntity {
 
     /**
      * Set the title
-     * 
+     *
      * @param string $title
      * @return self
      */
@@ -100,7 +120,7 @@ class Event extends AbstractEntity {
 
     /**
      * Get the place
-     * 
+     *
      * @return string
      */
     public function getPlace(): string
@@ -122,7 +142,7 @@ class Event extends AbstractEntity {
 
     /**
      * Is recurring
-     * 
+     *
      * @return bool
      */
     public function isRecurring(): bool
@@ -132,7 +152,7 @@ class Event extends AbstractEntity {
 
     /**
      * Set recurring
-     * 
+     *
      * @param bool $recurring
      * @return self
      */
@@ -144,7 +164,7 @@ class Event extends AbstractEntity {
 
     /**
      * Get starttime
-     * 
+     *
      * @return \DateTime
      */
     public function getStarttime(): \DateTime
@@ -154,7 +174,7 @@ class Event extends AbstractEntity {
 
     /**
      * Set starttime
-     * 
+     *
      * @param \DateTime $starttime
      * @return self
      */
@@ -166,7 +186,7 @@ class Event extends AbstractEntity {
 
     /**
      * Get endtime
-     * 
+     *
      * @return \DateTime|null
      */
     public function getEndtime(): ?\DateTime
@@ -176,11 +196,11 @@ class Event extends AbstractEntity {
 
     /**
      * Set endtime
-     * 
-     * @param \DateTime $endtime
+     *
+     * @param \DateTime|null $endtime
      * @return self
      */
-    public function setEndtime(\DateTime $endtime): self
+    public function setEndtime(\DateTime $endtime = null): self
     {
         $this->endtime = $endtime;
         return $this;
@@ -188,21 +208,21 @@ class Event extends AbstractEntity {
 
     /**
      * Get the timezone
-     * 
-     * @return \DateTimeZone
+     *
+     * @return string
      */
-    public function getTimezone(): \DateTimeZone
+    public function getTimezone(): string
     {
         return $this->timezone;
     }
 
     /**
      * Set the timezone
-     * 
-     * @param \DateTimeZone $timezone
+     *
+     * @param string $timezone
      * @return self
      */
-    public function setTimezone(\DateTimeZone $timezone): self
+    public function setTimezone(string $timezone): self
     {
         $this->timezone = $timezone;
         return $this;
@@ -210,7 +230,7 @@ class Event extends AbstractEntity {
 
     /**
      * Is whole day
-     * 
+     *
      * @return bool
      */
     public function isWholeDay(): bool
@@ -220,7 +240,7 @@ class Event extends AbstractEntity {
 
     /**
      * Set whole day
-     * 
+     *
      * @param bool $wholeDay
      * @return self
      */
@@ -232,21 +252,21 @@ class Event extends AbstractEntity {
 
     /**
      * Get status
-     * 
-     * @return Status
+     *
+     * @return string
      */
-    public function getStatus(): Status
+    public function getStatus(): string
     {
         return $this->status;
     }
 
     /**
      * Set status
-     * 
-     * @param Status $status
+     *
+     * @param string $status
      * @return self
      */
-    public function setStatus(Status $status): self
+    public function setStatus(string $status): self
     {
         $this->status = $status;
         return $this;
@@ -254,21 +274,21 @@ class Event extends AbstractEntity {
 
     /**
      * Get www address
-     * 
-     * @return Uri|null
+     *
+     * @return string
      */
-    public function getWwwAddress(): ?Uri
+    public function getWwwAddress(): string
     {
         return $this->wwwAddress;
     }
 
     /**
      * Set www address
-     * 
-     * @param Uri $wwwAddress
+     *
+     * @param string $wwwAddress
      * @return self
      */
-    public function setWwwAddress(Uri $wwwAddress): self
+    public function setWwwAddress(string $wwwAddress): self
     {
         $this->wwwAddress = $wwwAddress;
         return $this;
@@ -276,7 +296,7 @@ class Event extends AbstractEntity {
 
     /**
      * Get the description
-     * 
+     *
      * @return string
      */
     public function getDescription(): string
@@ -286,7 +306,7 @@ class Event extends AbstractEntity {
 
     /**
      * Set the description
-     * 
+     *
      * @param string $description
      * @return self
      */
@@ -297,8 +317,30 @@ class Event extends AbstractEntity {
     }
 
     /**
+     * Get the icon
+     *
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+    /**
+     * Set the icon
+     *
+     * @param string $icon
+     * @return self
+     */
+    public function setIcon(string $icon): self
+    {
+        $this->icon = $icon;
+        return $this;
+    }
+
+    /**
      * Get calendar
-     * 
+     *
      * @return Calendar
      */
     public function getCalendar(): Calendar
@@ -308,7 +350,7 @@ class Event extends AbstractEntity {
 
     /**
      * Set calendar
-     * 
+     *
      * @param Calendar $calendar
      * @return self
      */
@@ -319,8 +361,54 @@ class Event extends AbstractEntity {
     }
 
     /**
+     * Get the attendees
+     *
+     * @return ObjectStorage
+     */
+    public function getAttendees(): ObjectStorage
+    {
+        return $this->attendees;
+    }
+
+    /**
+     * Set the attendees
+     *
+     * @param ObjectStorage<Attendee> $attendees
+     * @return self
+     */
+    public function setAttendees(ObjectStorage $attendees): self
+    {
+        $this->attendees = $attendees;
+        return $this;
+    }
+
+    /**
+     * Add the given attendee
+     *
+     * @param Attendee $attendee
+     * @return self
+     */
+    public function addAttendee(Attendee $attendee): self
+    {
+        $this->attendees->attach($attendee);
+        return $this;
+    }
+
+    /**
+     * Remove the given attendee
+     *
+     * @param Attendee $attendeeToRemove
+     * @return self
+     */
+    public function removeAttendee(Attendee $attendeeToRemove): self
+    {
+        $this->attendees->detach($attendeeToRemove);
+        return $this;
+    }
+
+    /**
      * Create an array representation of the event
-     * 
+     *
      * @return array
      */
     public function toArray(): array
@@ -331,10 +419,10 @@ class Event extends AbstractEntity {
             'recurring' => $this->recurring,
             'starttime' => $this->starttime->format('r'),
             'endtime' => $this->endtime->format('r'),
-            'timezone' => $this->timezone->getName(),
+            'timezone' => $this->timezone,
             'wholeDay' => $this->wholeDay,
-            'status' => $this->status->getValue(),
-            'wwwAddress' => (string) $this->wwwAddress,
+            'status' => $this->status,
+            'wwwAddress' => $this->wwwAddress,
             'description' => $this->description,
             'calendar' => $this->calendar->getUid()
         ];

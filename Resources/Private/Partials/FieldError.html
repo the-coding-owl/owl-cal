@@ -2,9 +2,9 @@
     <f:section name="main">
         <f:form.validationResults>
             <f:if condition="{validationResults.flattenedErros">
-                <ul class="bg-danger">
+                <ul class="list-group bg-danger">
                     <f:for each="{validationResults.flattenedErrors}" as="errors" key="propertyPath">
-                        <li>
+                        <li class="list-group-item">
                             <f:translate key="error.{propertyPath}">error.{propertyPath}</f:translate>
                             <ul>
                                 <f:for each="{errors}" as="error">

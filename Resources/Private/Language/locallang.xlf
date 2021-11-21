@@ -30,6 +30,42 @@
             <trans-unit id="calendar.day.su">
                 <source>Sunday</source>
             </trans-unit>
+            <trans-unit id="calendar.month.1">
+                <source>January</source>
+            </trans-unit>
+            <trans-unit id="calendar.month.2">
+                <source>February</source>
+            </trans-unit>
+            <trans-unit id="calendar.month.3">
+                <source>March</source>
+            </trans-unit>
+            <trans-unit id="calendar.month.4">
+                <source>April</source>
+            </trans-unit>
+            <trans-unit id="calendar.month.5">
+                <source>May</source>
+            </trans-unit>
+            <trans-unit id="calendar.month.6">
+                <source>June</source>
+            </trans-unit>
+            <trans-unit id="calendar.month.7">
+                <source>July</source>
+            </trans-unit>
+            <trans-unit id="calendar.month.8">
+                <source>August</source>
+            </trans-unit>
+            <trans-unit id="calendar.month.9">
+                <source>September</source>
+            </trans-unit>
+            <trans-unit id="calendar.month.10">
+                <source>October</source>
+            </trans-unit>
+            <trans-unit id="calendar.month.11">
+                <source>November</source>
+            </trans-unit>
+            <trans-unit id="calendar.month.12">
+                <source>December</source>
+            </trans-unit>
             <trans-unit id="calendar.title">
                 <source>Title</source>
             </trans-unit>
@@ -49,7 +85,7 @@
                 <source>Save calendar</source>
             </trans-unit>
             <trans-unit id="calendar.create.success">
-                <source>The calendar %s got created</source>
+                <source>The calendar "%s" got created</source>
             </trans-unit>
             <trans-unit id="calendar.create.success.title">
                 <source>Creation successfull</source>
@@ -57,8 +93,95 @@
             <trans-unit id="calendar.save">
                 <source>Save calendar</source>
             </trans-unit>
+            <trans-unit id="calendar.view.day">
+                <source>View single day</source>
+            </trans-unit>
+            <trans-unit id="calendar.view.week">
+                <source>View week</source>
+            </trans-unit>
+            <trans-unit id="calendar.view.month">
+                <source>View month</source>
+            </trans-unit>
+            <trans-unit id="calendar.view.next">
+                <source>View next events</source>
+            </trans-unit>
+            <trans-unit id="calendar.view.previousYear">
+                <source>Previous year</source>
+            </trans-unit>
+            <trans-unit id="calendar.view.nextYear">
+                <source>Next year</source>
+            </trans-unit>
+            <trans-unit id="event.title">
+                <source>Title</source>
+            </trans-unit>
+            <trans-unit id="event.place">
+                <source>Place</source>
+            </trans-unit>
+            <trans-unit id="event.description">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="event.startdate">
+                <source>Startdate</source>
+            </trans-unit>
+            <trans-unit id="event.starttime">
+                <source>Starttime</source>
+            </trans-unit>
+            <trans-unit id="event.enddate">
+                <source>Enddate</source>
+            </trans-unit>
+            <trans-unit id="event.endtime">
+                <source>Endtime</source>
+            </trans-unit>
+            <trans-unit id="event.wholeDay">
+                <source>Whole day</source>
+            </trans-unit>
+            <trans-unit id="event.timezone">
+                <source>Timezone</source>
+            </trans-unit>
+            <trans-unit id="event.recurring">
+                <source>Recurring</source>
+            </trans-unit>
+            <trans-unit id="event.status">
+                <source>Status</source>
+            </trans-unit>
+            <trans-unit id="event.status.none">
+                <source>None</source>
+            </trans-unit>
+            <trans-unit id="event.status.tentative">
+                <source>Tentative</source>
+            </trans-unit>
+            <trans-unit id="event.status.confirmed">
+                <source>Confirmed</source>
+            </trans-unit>
+            <trans-unit id="event.status.canceled">
+                <source>Canceled</source>
+            </trans-unit>
+            <trans-unit id="event.wwwAddress">
+                <source>www address</source>
+            </trans-unit>
+            <trans-unit id="event.calendar">
+                <source>Calendar</source>
+            </trans-unit>
+            <trans-unit id="event.icon">
+                <source>Icon</source>
+            </trans-unit>
+            <trans-unit id="event.attendees">
+                <source>Attendees</source>
+            </trans-unit>
+            <trans-unit id="event.new">
+                <source>Create new event</source>
+            </trans-unit>
+            <trans-unit id="event.save">
+                <source>Save event</source>
+            </trans-unit>
             <trans-unit id="event.edit">
                 <source>Edit event</source>
+            </trans-unit>
+            <trans-unit id="event.create.success">
+                <source>The event "%s" got created</source>
+            </trans-unit>
+            <trans-unit id="event.create.success.title">
+                <source>Creation successfull</source>
             </trans-unit>
         </body>
     </file>

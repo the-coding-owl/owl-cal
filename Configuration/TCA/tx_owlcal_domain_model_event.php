@@ -43,12 +43,18 @@ return [
         ],
         'starttime' => [
             'config' => [
-                'type' => 'input'
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'dbType' => 'datetime',
+                'eval' => 'datetime,null'
             ]
         ],
         'endtime' => [
             'config' => [
-                'type' => 'input'
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'dbType' => 'datetime',
+                'eval' => 'datetime,null'
             ]
         ],
         'timezone' => [
@@ -64,9 +70,7 @@ return [
         ],
         'status' => [
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'tx_owlcal_domain_model_status'
+                'type' => 'input'
             ]
         ],
         'www_address' => [
@@ -77,6 +81,11 @@ return [
         'description' => [
             'config' => [
                 'type' => 'text'
+            ]
+        ],
+        'icon' => [
+            'config' => [
+                'type' => 'input'
             ]
         ],
         'calendar' => [

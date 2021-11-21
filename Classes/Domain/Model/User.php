@@ -33,13 +33,6 @@ class User extends AbstractEntity {
      */
     protected string $email = '';
 
-    /**
-     * @var string
-     * @Validate("NotEmpty")
-     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\PasswordValidator")
-     */
-    protected string $password = '';
-
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -60,17 +53,6 @@ class User extends AbstractEntity {
     public function getEmail(): string
     {
         return $this->email;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-        return $this;
-    }
-
-    public function getPassword(): string
-    {
-        return $this->password;
     }
 
     public function toArray(): array

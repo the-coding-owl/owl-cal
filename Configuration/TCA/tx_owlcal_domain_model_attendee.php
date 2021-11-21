@@ -19,10 +19,28 @@ return [
     'ctrl' => [
         'hideTable' => true,
         'rootLevel' => 1,
-        'is_static' => true
+        'crdate' => 'crdate',
+        'tstamp' => 'tstamp',
+        'cruser_id' => 'cruser_id',
+        'delete' => 'deleted'
     ],
     'columns' => [
-        'title' => [
+        'name' => [
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
+        'email' => [
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
+        'participation' => [
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
+        'role' => [
             'config' => [
                 'type' => 'input'
             ]

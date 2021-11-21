@@ -17,37 +17,32 @@
 
 namespace TheCodingOwl\OwlCal\Validation\Validator;
 
-use TheCodingOwl\OwlCal\Domain\Repository\UserRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TheCodingOwl\OwlCal\Exception\InvalidParameterTypeException;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /**
- * Validator to check user permissions to a given calendar
+ * Validator that checks if the input is a valid DateTimeZone
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class UserPermissionValidator extends AbstractValidator {
+class DateTimeZoneValidator extends AbstractValidator {
     /**
-     * @var UserRepository
-     */
-    protected UserRepository $userRepository;
-
-    public function __construct(array $options = [])
-    {
-        $this->userRepository = GeneralUtility::makeInstance(UserRepository::class);
-        parent::__construct($options);
-    }
-
-    /**
-     * Check if the given value is valid
+     * Validate the given timezone against the list of timezones from PHP
      *
-     * @param int $value Uid of the user to check
+     * @param string $value
      * @return void
+     * @throws InvalidParameterTypeException if the given value is not a string
      */
     public function isValid($value)
     {
-        if ($value !== $this->userRepository->findCurrentUser()->getUid()) {
-            $this->addError('The current user is not allowed to see this calendar!', 1637512949);
+        if (!is_string($value)) {
+            throw new InvalidParameterTypeException('The given value is not a string!');
+        }
+        if ($value === '') {
+            return;
+        }
+        if(!in_array($value, \DateTimeZone::listIdentifiers())) {
+            $this->addError('The given value is not a valid Timezone!', 1637512930);
         }
     }
 }

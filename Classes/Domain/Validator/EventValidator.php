@@ -15,26 +15,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace TheCodingOwl\OwlCal\Validation\Validator;
+namespace TheCodingOwl\OwlCal\Domain\Validator;
 
+use TheCodingOwl\OwlCal\Domain\Model\Event;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /**
- * Validator class that checks if a given string is a valid password
- * 
+ * Validator class that checks the event for validity
+ *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class PasswordValidator extends AbstractValidator {
+class EventValidator extends AbstractValidator {
     /**
-     * Checks if the given value is a valid password string
-     * 
-     * @param string $value
+     * Check the validity of the event
+     *
+     * @param Event $value
      * @return void
      */
     public function isValid($value)
     {
-        if (!preg_match('/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/', $value)) {
-            $this->addError('Password has to contain uppercase, lowercase, numbers and special characters!', 1000);
+        if (!($value instanceof Event)) {
+            $this->addError('The given value is not an event!', 1637513029);
+            return;
+        }
+        $endtime = $value->getEndtime();
+        if ($endtime !== null) {
+            $starttime = $value->getStarttime();
+            if ($endtime < $starttime) {
+                $this->addError(
+                    'Endtime has to be greater then starttime',
+                    1637513037,
+                    [$starttime, $endtime]
+                );
+            }
         }
     }
 }

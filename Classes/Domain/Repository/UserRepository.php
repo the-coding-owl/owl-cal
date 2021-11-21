@@ -65,7 +65,7 @@ class UserRepository extends Repository {
         if ($currentUser instanceof User) {
             return $currentUser;
         }
-        throw new UserNotFoundException('Current user could not be found!', 1001);
+        throw new UserNotFoundException('Current user could not be found!', 1637513067);
     }
 
     /**

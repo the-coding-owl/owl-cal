@@ -6,10 +6,12 @@ CREATE TABLE tx_owlcal_domain_model_event (
     endtime DATETIME DEFAULT '0001-01-01 00:00:00' NOT NULL,
     timezone varchar(255) DEFAULT '' NOT NULL,
     whole_day TINYINT(3) DEFAULT '0' NOT NULL,
-    status int(11) unsigned DEFAULT '0' NOT NULL,
+    status varchar(255) DEFAULT 'none' NOT NULL,
     www_address varchar(1048) DEFAULT '' NOT NULL,
     description text,
-    calendar  int(11) unsigned DEFAULT '0' NOT NULL
+    icon varchar(255) DEFAULT '' NOT NULL,
+    calendar  int(11) unsigned DEFAULT '0' NOT NULL,
+    attendees int(11) unsigned DEFAULT '0' NOT NULL
 );
 
 CREATE TABLE tx_owlcal_domain_model_calendar (
@@ -19,6 +21,9 @@ CREATE TABLE tx_owlcal_domain_model_calendar (
     color varchar(7) DEFAULT '#000000' NOT NULL
 );
 
-CREATE TABLE tx_owlcal_domain_model_status (
-    title varchar(255) DEFAULT '' NOT NULL
+CREATE TABLE tx_owlcal_domain_model_attendee (
+    name varchar(255) DEFAULT '' NOT NULL,
+    email varchar(255) DEFAULT '' NOT NULL,
+    participation varchar(255) DEFAULT '' NOT NULL,
+    role varchar(255) DEFAULT '' NOT NULL
 );

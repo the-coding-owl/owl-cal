@@ -20,14 +20,19 @@ namespace TheCodingOwl\OwlCal\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TheCodingOwl\OwlCal\Domain\Model\Calendar;
 use TheCodingOwl\OwlCal\Domain\Model\Event;
+use TheCodingOwl\OwlCal\Domain\Repository\CalendarRepository;
 use TheCodingOwl\OwlCal\Domain\Repository\EventRepository;
 use TheCodingOwl\OwlCal\Domain\Repository\UserRepository;
+use TheCodingOwl\OwlCal\Property\TypeConverter\CombinedDateTimeTypeConverter;
+use TheCodingOwl\OwlCal\Session\ViewSession;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 
 /**
  * Event controller
@@ -35,6 +40,16 @@ use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
 class EventController extends ActionController {
+    /**
+     * @var PageRenderer
+     */
+    protected PageRenderer $pageRenderer;
+
+    /**
+     * @var CalendarRepository
+     */
+    protected CalendarRepository $calendarRepository;
+
     /**
      * @var EventRepository
      */
@@ -45,15 +60,29 @@ class EventController extends ActionController {
      */
     protected UserRepository $userRepository;
 
-    public function __construct(EventRepository $eventRepository, UserRepository $userRepository)
+    /**
+     * @var ViewSession
+     */
+    protected ViewSession $viewSession;
+
+    public function __construct(
+        PageRenderer $pageRenderer,
+        CalendarRepository $calendarRepository,
+        EventRepository $eventRepository,
+        UserRepository $userRepository,
+        ViewSession $viewSession
+    )
     {
+        $this->pageRenderer = $pageRenderer;
+        $this->calendarRepository = $calendarRepository;
         $this->eventRepository = $eventRepository;
         $this->userRepository = $userRepository;
+        $this->viewSession = $viewSession;
     }
 
     /**
      * Show the given event
-     * 
+     *
      * @param Event $event
      * @return ResponseInterface
      */
@@ -69,7 +98,7 @@ class EventController extends ActionController {
 
     /**
      * List events from a given calendar
-     * 
+     *
      * @param Calendar $calendar
      * @return ResponseInterface
      */
@@ -87,24 +116,57 @@ class EventController extends ActionController {
 
     /**
      * Show the form for creating new events
-     * 
-     * @param Calendar $calendar The calendar to use for the new event
+     *
+     * @param Calendar|null $calendar The calendar to use for the new event
      * @param Event|null $event The new event
      * @IgnoreValidation(argumentName="calendar")
      * @return ResponseInterface
      */
-    public function newAction(Calendar $calendar, Event $event = null): ResponseInterface
+    public function newAction(Calendar $calendar = null, Event $event = null): ResponseInterface
     {
+        if ($calendar === null && $this->viewSession->getFirstSelectedCalendar()) {
+            $calendar = $this->calendarRepository->findByUid(
+                $this->viewSession->getFirstSelectedCalendar()
+            );
+        }
+        $currentUser = $this->userRepository->findCurrentUser();
+        $calendars = $this->calendarRepository->findByOwner($currentUser->getUid());
+        $timezones = \DateTimeZone::listIdentifiers();
+        $this->view->assign('calendars', $calendars);
         $this->view->assign('event', $event);
         $this->view->assign('calendar', $calendar);
-        return new HtmlResponse($this->view->render());
+        $this->view->assign('timezones', $timezones);
+        $this->view->assign('status', [
+            Event::STATUS_NONE,
+            Event::STATUS_TENTATIVE,
+            Event::STATUS_CONFIRMED,
+            Event::STATUS_CANCELED]
+        );
+        $this->pageRenderer->setBodyContent($this->view->render());
+        return $this->htmlResponse($this->pageRenderer->render());
+    }
+
+    /**
+     * Initiliaze the create action and set some type converters
+     *
+     * @return void
+     */
+    public function initializeCreateAction(): void
+    {
+        $propertyMappingConfiguration = $this->arguments->getArgument('event')
+            ->getPropertyMappingConfiguration();
+        $propertyMappingConfiguration->forProperty('endtime')
+            ->setTypeConverter(new CombinedDateTimeTypeConverter());
+        $propertyMappingConfiguration->forProperty('starttime')
+            ->setTypeConverter(new CombinedDateTimeTypeConverter());
     }
 
     /**
      * Persist the new event to database
-     * 
+     *
      * @param Event $event The event to persist
      * @return ResponseInterface
+     * @Validate("TheCodingOwl\OwlCal\Domain\Validator\EventValidator", param="event")
      */
     public function createAction(Event $event): ResponseInterface
     {
@@ -113,21 +175,28 @@ class EventController extends ActionController {
             return new JsonResponse($event->toArray());
         }
         $this->addFlashMessage(
-            LocalizationUtility::translate('event.create.success'), 
-            LocalizationUtility::translate('event.create.success.title')
+            LocalizationUtility::translate(
+                'event.create.success',
+                $this->request->getControllerExtensionName(),
+                [$event->getTitle()]
+            ),
+            LocalizationUtility::translate(
+                'event.create.success.title',
+                $this->request->getControllerExtensionName()
+            )
         );
         return new RedirectResponse($this->uriBuilder->uriFor(
-            'show', 
-            ['calendar' => $event->getCalendar()->getUid()], 
-            $this->request->getControllerName(), 
-            $this->request->getControllerExtensionName(), 
+            'list',
+            [],
+            $this->request->getControllerName(),
+            $this->request->getControllerExtensionName(),
             $this->request->getPluginName()
         ));
     }
 
     /**
      * Show the form for the edit view
-     * 
+     *
      * @param Event $event The event to edit
      * @IgnoreValidation(argumentName="event")
      * @return ResponseInterface
@@ -140,7 +209,7 @@ class EventController extends ActionController {
 
     /**
      * Persist the event changes
-     * 
+     *
      * @param Event $event The event to edit
      * @return ResponseInterface
      */
@@ -151,14 +220,14 @@ class EventController extends ActionController {
             return new JsonResponse($event->toArray());
         }
         $this->addFlashMessage(
-            LocalizationUtility::translate('event.save.success'), 
-            LocalizationUtility::translate('event.save.success.title')
+            LocalizationUtility::translate('event.save.success', $this->request->getControllerExtensionName()),
+            LocalizationUtility::translate('event.save.success.title', $this->request->getControllerExtensionName())
         );
         return new RedirectResponse($this->uriBuilder->uriFor(
-            'show', 
-            ['calendar' => $event->getCalendar()->getUid()], 
-            CalendarController::class, 
-            $this->request->getControllerExtensionName(), 
+            'show',
+            ['calendar' => $event->getCalendar()->getUid()],
+            CalendarController::class,
+            $this->request->getControllerExtensionName(),
             $this->request->getPluginName()
         ));
     }

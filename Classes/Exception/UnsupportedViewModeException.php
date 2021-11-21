@@ -20,10 +20,10 @@ namespace TheCodingOwl\OwlCal\Exception;
 use TYPO3\CMS\Core\Error\Exception;
 
 /**
- * Exception that is thrown if a parameter has a wrong type
+ * Exception that is thrown if there was a view mode that is not supported
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class InvalidParameterTypeException extends Exception {
+class UnsupportedViewModeException extends Exception {
 
 }

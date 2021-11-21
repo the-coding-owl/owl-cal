@@ -15,15 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace TheCodingOwl\OwlCal\Exception;
+namespace TheCodingOwl\OwlCal\Service;
 
-use TYPO3\CMS\Core\Error\Exception;
-
-/**
- * Exception that is thrown if a parameter has a wrong type
- *
- * @author Kevin Ditscheid <kevin@the-coding-owl.de>
- */
-class InvalidParameterTypeException extends Exception {
-
+class CalendarService {
+    
 }

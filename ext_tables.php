@@ -8,7 +8,7 @@
         '',
         [
             \TheCodingOwl\OwlCal\Controller\CalendarController::class => 'index,list,new,edit,create,save',
-            \TheCodingOwl\OwlCal\Domain\Model\Event::class => 'new,edit,create,save'
+            \TheCodingOwl\OwlCal\Controller\EventController::class => 'new,edit,create,save'
         ],
         [
             'access' => 'user,group',

@@ -15,17 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace TheCodingOwl\OwlCal\Domain\Model;
+namespace TheCodingOwl\OwlCal\Exception;
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
+use TYPO3\CMS\Core\Error\Exception;
 
 /**
- * Status model
+ * Exception that is thrown if a date is invalid.
+ * This can also be used to state that parts of a date are
+ * invalid, like a month.
+ *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Status extends AbstractValueObject {
-    public function getValue()
-    {
-        return '';
-    }
+class InvalidDateException extends Exception {
+
 }

@@ -22,6 +22,7 @@ use TheCodingOwl\OwlCal\Domain\Model\Calendar;
 use TheCodingOwl\OwlCal\Domain\Model\Dto\ICS;
 use TheCodingOwl\OwlCal\Domain\Repository\CalendarRepository;
 use TheCodingOwl\OwlCal\Domain\Repository\UserRepository;
+use TheCodingOwl\OwlCal\Session\ViewSession;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -51,15 +52,22 @@ class CalendarController extends ActionController {
      */
     protected UserRepository $userRepository;
 
+    /**
+     * @var ViewSession
+     */
+    protected ViewSession $viewSession;
+
     public function __construct(
         PageRenderer $pageRenderer,
         CalendarRepository $calendarRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        ViewSession $viewSession
     )
     {
         $this->pageRenderer = $pageRenderer;
         $this->calendarRepository = $calendarRepository;
         $this->userRepository = $userRepository;
+        $this->viewSession = $viewSession;
     }
 
     /**
@@ -172,6 +180,21 @@ class CalendarController extends ActionController {
         if ($this->request->getFormat() === 'json') {
             return new JsonResponse((array) $calendars);
         }
+        $weeks = [];
+        $currentDate = new \DateTime();
+        $daysOfMonth = $currentDate->format('t');
+        $date = clone $currentDate;
+        $date->modify('-' . $currentDate->format('d') . ' days');
+        for($i = 1; $i <= $daysOfMonth; $i++) {
+            $date->modify('+1 day');
+            $week = $date->format('W');
+            $weeks[$week][] = clone $date;
+        }
+        $this->view->assign('weeks', $weeks);
+        $this->view->assign('currentMonth', $currentDate->format('n'));
+        $this->view->assign('currentYear', $currentDate->format('Y'));
+        $this->view->assign('months', range(1,12));
+        $this->view->assign('years', range(1970, 2100));
         $this->view->assign('calendars', $calendars);
         $this->pageRenderer->setBodyContent($this->view->render());
         return $this->htmlResponse($this->pageRenderer->render());
