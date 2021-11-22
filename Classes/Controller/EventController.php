@@ -17,6 +17,7 @@
 
 namespace TheCodingOwl\OwlCal\Controller;
 
+use DateTimeZone;
 use Psr\Http\Message\ResponseInterface;
 use TheCodingOwl\OwlCal\Domain\Model\Calendar;
 use TheCodingOwl\OwlCal\Domain\Model\Event;
@@ -108,10 +109,10 @@ class EventController extends ActionController {
         if ($this->request->getFormat() === 'json') {
             return new JsonResponse((array) $events);
         }
-
         $this->view->assign('events', $events);
         $this->view->assign('calendar', $calendar);
-        return new HtmlResponse($this->view->render());
+        $this->pageRenderer->setBodyContent($this->view->render());
+        return $this->htmlResponse($this->pageRenderer->render());
     }
 
     /**
@@ -124,24 +125,9 @@ class EventController extends ActionController {
      */
     public function newAction(Calendar $calendar = null, Event $event = null): ResponseInterface
     {
-        if ($calendar === null && $this->viewSession->getFirstSelectedCalendar()) {
-            $calendar = $this->calendarRepository->findByUid(
-                $this->viewSession->getFirstSelectedCalendar()
-            );
-        }
-        $currentUser = $this->userRepository->findCurrentUser();
-        $calendars = $this->calendarRepository->findByOwner($currentUser->getUid());
-        $timezones = \DateTimeZone::listIdentifiers();
-        $this->view->assign('calendars', $calendars);
+        $this->setDefaultCalendar($calendar);
+        $this->prepareEditViewVariables($calendar);
         $this->view->assign('event', $event);
-        $this->view->assign('calendar', $calendar);
-        $this->view->assign('timezones', $timezones);
-        $this->view->assign('status', [
-            Event::STATUS_NONE,
-            Event::STATUS_TENTATIVE,
-            Event::STATUS_CONFIRMED,
-            Event::STATUS_CANCELED]
-        );
         $this->pageRenderer->setBodyContent($this->view->render());
         return $this->htmlResponse($this->pageRenderer->render());
     }
@@ -153,12 +139,8 @@ class EventController extends ActionController {
      */
     public function initializeCreateAction(): void
     {
-        $propertyMappingConfiguration = $this->arguments->getArgument('event')
-            ->getPropertyMappingConfiguration();
-        $propertyMappingConfiguration->forProperty('endtime')
-            ->setTypeConverter(new CombinedDateTimeTypeConverter());
-        $propertyMappingConfiguration->forProperty('starttime')
-            ->setTypeConverter(new CombinedDateTimeTypeConverter());
+        $this->addTypeConverterToEventProperty('endtime', CombinedDateTimeTypeConverter::class);
+        $this->addTypeConverterToEventProperty('starttime', CombinedDateTimeTypeConverter::class);
     }
 
     /**
@@ -188,7 +170,7 @@ class EventController extends ActionController {
         return new RedirectResponse($this->uriBuilder->uriFor(
             'list',
             [],
-            $this->request->getControllerName(),
+            'Calendar',
             $this->request->getControllerExtensionName(),
             $this->request->getPluginName()
         ));
@@ -203,8 +185,21 @@ class EventController extends ActionController {
      */
     public function editAction(Event $event): ResponseInterface
     {
+        $this->prepareEditViewVariables();
         $this->view->assign('event', $event);
-        return new HtmlResponse($this->view->render());
+        $this->pageRenderer->setBodyContent($this->view->render());
+        return $this->htmlResponse($this->pageRenderer->render());
+    }
+
+    /**
+     * Initiliaze the save action and set some type converters
+     *
+     * @return void
+     */
+    public function initializeSaveAction(): void
+    {
+        $this->addTypeConverterToEventProperty('endtime', CombinedDateTimeTypeConverter::class);
+        $this->addTypeConverterToEventProperty('starttime', CombinedDateTimeTypeConverter::class);
     }
 
     /**
@@ -220,15 +215,134 @@ class EventController extends ActionController {
             return new JsonResponse($event->toArray());
         }
         $this->addFlashMessage(
-            LocalizationUtility::translate('event.save.success', $this->request->getControllerExtensionName()),
-            LocalizationUtility::translate('event.save.success.title', $this->request->getControllerExtensionName())
+            LocalizationUtility::translate(
+                'event.save.success',
+                $this->request->getControllerExtensionName(),
+                [$event->getTitle()]
+            ),
+            LocalizationUtility::translate(
+                'event.save.success.title',
+                $this->request->getControllerExtensionName()
+            )
         );
         return new RedirectResponse($this->uriBuilder->uriFor(
-            'show',
-            ['calendar' => $event->getCalendar()->getUid()],
-            CalendarController::class,
+            'list',
+            [],
+            'Calendar',
             $this->request->getControllerExtensionName(),
             $this->request->getPluginName()
         ));
+    }
+
+    /**
+     * Delete an event
+     *
+     * @param Event $event
+     * @return ResponseInterface
+     */
+    public function deleteAction(Event $event): ResponseInterface
+    {
+        $this->eventRepository->remove($event);
+        if ($this->request->getFormat() === 'json') {
+            return new JsonResponse(['status' => 'success']);
+        }
+        $this->addFlashMessage(
+            LocalizationUtility::translate(
+                'event.delete.success',
+                $this->request->getControllerExtensionName(),
+                [$event->getTitle()]
+            ),
+            LocalizationUtility::translate(
+                'event.delete.success.title',
+                $this->request->getControllerExtensionName()
+            )
+        );
+        return new RedirectResponse($this->uriBuilder->uriFor(
+            'list',
+            [],
+            'Calendar',
+            $this->request->getControllerExtensionName(),
+            $this->request->getPluginName()
+        ));
+    }
+    
+    /**
+     * Add the list of calendars of the current user to the view
+     *
+     * @return void
+     */
+    protected function setCalendarList(): void
+    {
+        $currentUser = $this->userRepository->findCurrentUser();
+        $calendars = $this->calendarRepository->findByOwner($currentUser->getUid());
+        $this->view->assign('calendars', $calendars);
+    }
+
+    /**
+     * Add the default selected calendar to the view
+     *
+     * @param Calendar|null $calendar
+     * @return void
+     */
+    protected function setDefaultCalendar(Calendar $calendar = null): void
+    {
+        if ($calendar === null && $this->viewSession->getFirstSelectedCalendar()) {
+            $calendar = $this->calendarRepository->findByUid(
+                $this->viewSession->getFirstSelectedCalendar()
+            );
+        }
+        $this->view->assign('calendar', $calendar);
+    }
+
+    /**
+     * Add the list of statuses to the view
+     *
+     * @return void
+     */
+    protected function setStatusList(): void
+    {
+        $this->view->assign('status', [
+            Event::STATUS_NONE,
+            Event::STATUS_TENTATIVE,
+            Event::STATUS_CONFIRMED,
+            Event::STATUS_CANCELED]
+        );
+    }
+
+    /**
+     * Add the list of timezones to the view
+     */
+    protected function setTimezones(): void
+    {
+        $timezones = \DateTimeZone::listIdentifiers();
+        $this->view->assign('defaultTimezone', (new \DateTime())->getTimezone()->getName());
+        $this->view->assign('timezones', $timezones);
+    }
+
+    /**
+     * Prepare the edit view variables and add them to the view
+     *
+     * @return void
+     */
+    protected function prepareEditViewVariables(): void
+    {
+        $this->setCalendarList();
+        $this->setTimezones();
+        $this->setStatusList();
+    }
+
+    /**
+     * Add the given type converter to the defined property of an event
+     *
+     * @param string $property The property name of the event
+     * @param string $typeConverter The class name of the type converter
+     * @return void
+     */
+    protected function addTypeConverterToEventProperty(string $property, string $typeConverter): void
+    {
+        $this->arguments->getArgument('event')
+            ->getPropertyMappingConfiguration()
+            ->forProperty($property)
+            ->setTypeConverter(new $typeConverter());
     }
 }

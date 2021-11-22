@@ -90,7 +90,9 @@ return [
         ],
         'calendar' => [
             'config' => [
-                'type' => 'passthrough'
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'tx_owlcal_domain_model_calendar'
             ]
         ]
     ],

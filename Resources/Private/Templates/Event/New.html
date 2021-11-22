@@ -5,7 +5,7 @@
         <f:form name="event" action="create" object="{event}">
             <f:render partial="Event/FormFields"
                       section="main"
-                      arguments="{calendar: calendar, calendars: calendars, event: event, timezones: timezones, status: status}" />
+                      arguments="{calendar: calendar, calendars: calendars, event: event, timezones: timezones, status: status, defaultTimezone: defaultTimezone}" />
             <f:form.button class="btn btn-lg btn-success" title="{f:translate(key:'event.save')}"><i class="bi bi-check"></i></f:form.button>
         </f:form>
     </f:section>

@@ -6,28 +6,28 @@
                 <div class="btn-group" role="group">
                     <f:link.action action="list"
                                    controller="Calendar"
-                                   class="btn btn-outline-primary"
+                                   class="btn btn-outline-secondary"
                                    title="{f:translate(key:'calendar.view.day')}"
                                    arguments="{view: 'day'}">
                         <i class="bi bi-calendar-day"></i>
                     </f:link.action>
                     <f:link.action action="list"
                                    controller="Calendar"
-                                   class="btn btn-outline-primary"
+                                   class="btn btn-outline-secondary"
                                    title="{f:translate(key:'calendar.view.week')}"
                                    arguments="{view: 'week'}">
                         <i class="bi bi-calendar-week"></i>
                     </f:link.action>
                     <f:link.action action="list"
                                    controller="Calendar"
-                                   class="btn btn-primary"
+                                   class="btn btn-secondary"
                                    title="{f:translate(key:'calendar.view.month')}"
                                    arguments="{view: 'month'}">
                         <i class="bi bi-calendar-month"></i>
                     </f:link.action>
                     <f:link.action action="list"
                                    controller="Calendar"
-                                   class="btn btn-outline-primary"
+                                   class="btn btn-outline-secondary"
                                    title="{f:translate(key:'calendar.view.next')}"
                                    arguments="{view: 'next'}">
                         <i class="bi bi-calendar-event"></i>
@@ -38,13 +38,13 @@
                 <div class="btn-group" role="group">
                     <f:link.action action="list"
                                    controller="Calendar"
-                                   class="btn btn-primary"
+                                   class="btn btn-outline-secondary"
                                    title="{f:translate(key:'calendar.view.previousYear')}"
                                    arguments="{selectedYear: '{currentYear - 1}'}">
                         <i class="bi bi-caret-left"></i>
                     </f:link.action>
                     <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="owl-cal-select-month" data-bs-toggle="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="owl-cal-select-month" data-bs-toggle="dropdown">
                             <f:translate key="calendar.month.{currentMonth}" />
                         </button>
                         <ul class="dropdown-menu">
@@ -58,7 +58,7 @@
                         </ul>
                     </div>
                     <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="owl-cal-select-year" data-bs-toggle="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="owl-cal-select-year" data-bs-toggle="dropdown">
                             {currentYear}
                         </button>
                         <ul class="dropdown-menu">
@@ -73,7 +73,7 @@
                     </div>
                     <f:link.action action="list"
                                    controller="Calendar"
-                                   class="btn btn-primary"
+                                   class="btn btn-outline-secondary"
                                    title="{f:translate(key:'calendar.view.nextYear')}"
                                    arguments="{selectedYear: '{currentYear + 1}'}">
                         <i class="bi bi-caret-right"></i>
@@ -83,7 +83,7 @@
             <div class="col-4">
                 <f:link.action action="new"
                                controller="Event"
-                               class="btn btn-primary"
+                               class="btn btn-success"
                                arguments="{calendar: currentCalendar}"
                                title="{f:translate(key:'event.new')}">
                     <i class="bi bi-calendar-plus"></i>
@@ -104,7 +104,23 @@
                 <f:for each="{weeks}" key="weekNumber" as="days">
                     <tr>
                         <f:for each="{days}" as="day">
-                            <td><small><f:format.date format="j">{day}</f:format.date></small></td>
+                            <td>
+                                <small><f:format.date format="j">{day}</f:format.date></small>
+                                <f:for each="{calendars}" as="calendar">
+                                    <f:for each="{calendar.events}" as="event">
+                                        <f:if condition="{event.starttime} <= {day} && {event.endtime} >= {day}">
+                                            <f:then>
+                                                <f:render partial="Event/Card" section="main" arguments="{event: event}" />
+                                            </f:then>
+                                            <f:else>
+                                                <f:if condition="{f:format.date(format:'d-m-Y', date: '{event.starttime}')} == {f:format.date(format:'d-m-Y', date: '{day}')}">
+                                                    <f:render partial="Event/Card" section="main" arguments="{event: event}" />
+                                                </f:if>
+                                            </f:else>
+                                        </f:if>
+                                    </f:for>
+                                </f:for>
+                            </td>
                         </f:for>
                     </tr>
                 </f:for>
@@ -112,34 +128,32 @@
         </div>
     </f:section>
     <f:section name="navigation">
-        <f:link.action class="btn btn-lg btn-primary" action="new" controller="Calendar" title="{f:translate(key:'calendar.new')}">
-            <i class="bi bi-calendar-plus"></i>
-        </f:link.action>
-        <ul class="nav flex-column">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <f:link.action class="btn btn-success" action="new" controller="Calendar" title="{f:translate(key:'calendar.new')}">
+                    <i class="bi bi-calendar-plus"></i>
+                </f:link.action>
+            </div>
             <f:for each="{calendars}" as="calendar">
-                <li class="nav-item">
-                    <f:if condition="{calendar.visible}">
-                        <f:then>
-                            <f:link.action class="nav-link active" action="list" controller="Calendar" arguments="{showCalendar: calendar.uid}">
-                                <i class="bi bi-calendar-check" style="color: {calendar.color}"></i>
-                            </f:link.action>
-                            <f:link.action action="edit" controller="Calendar" arguments="{calendar: calendar}">
-                                <i class="bi bi-pencil"></i>
-                            </f:link.action>
-                            {calendar.title}
-                        </f:then>
-                        <f:else>
-                            <f:link.action class="nav-link" action="list" controller="Calendar" arguments="{hideCalendar: calendar.uid}">
-                                <i class="bi bi-calendar" style="color: {calendar.color}"></i>
-                            </f:link.action>
-                            <f:link.action action="edit" controller="Calendar" arguments="{calendar: calendar}">
-                                <i class="bi bi-pencil"></i>
-                            </f:link.action>
-                            {calendar.title}
-                        </f:else>
-                    </f:if>
-                </li>
+                <div class="col-12 mb-3">
+                    <f:render section="calendarActions" arguments="{calendar: calendar}" />
+                    {calendar.title}
+                </div>
             </f:for>
-        </ul>
+        </div>
+    </f:section>
+    <f:section name="calendarActions">
+        <f:link.action class="btn btn-outline-secondary"
+                       action="list"
+                       controller="Calendar"
+                       arguments="{toggleCalendar: calendar.uid}">
+            <i class="bi bi-circle{f:if(condition:'{calendar.visible}',then:'-fill')}" style="color: {calendar.color}"></i>
+        </f:link.action>
+        <f:link.action class="btn btn-secondary" action="edit" controller="Calendar" arguments="{calendar: calendar}">
+            <i class="bi bi-pencil"></i>
+        </f:link.action>
+        <f:link.action class="btn btn-danger" action="delete" controller="Calendar" arguments="{calendar: calendar}">
+            <i class="bi bi-trash"></i>
+        </f:link.action>
     </f:section>
 </html>

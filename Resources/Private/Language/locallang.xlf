@@ -9,6 +9,9 @@
             <trans-unit id="calendar.new">
                 <source>Create calendar</source>
             </trans-unit>
+            <trans-unit id="calendar.edit">
+                <source>Edit calendar</source>
+            </trans-unit>
             <trans-unit id="calendar.day.mo">
                 <source>Monday</source>
             </trans-unit>
@@ -89,6 +92,18 @@
             </trans-unit>
             <trans-unit id="calendar.create.success.title">
                 <source>Creation successfull</source>
+            </trans-unit>
+            <trans-unit id="calendar.save.success">
+                <source>The calendar "%s" got saved</source>
+            </trans-unit>
+            <trans-unit id="calendar.save.success.title">
+                <source>Save successfull</source>
+            </trans-unit>
+            <trans-unit id="calendar.delete.success">
+                <source>The calendar "%s" got removed</source>
+            </trans-unit>
+            <trans-unit id="calendar.delete.success.title">
+                <source>Delete successfull</source>
             </trans-unit>
             <trans-unit id="calendar.save">
                 <source>Save calendar</source>
@@ -171,6 +186,9 @@
             <trans-unit id="event.new">
                 <source>Create new event</source>
             </trans-unit>
+            <trans-unit id="event.edit">
+                <source>Edit event "%s"</source>
+            </trans-unit>
             <trans-unit id="event.save">
                 <source>Save event</source>
             </trans-unit>
@@ -182,6 +200,18 @@
             </trans-unit>
             <trans-unit id="event.create.success.title">
                 <source>Creation successfull</source>
+            </trans-unit>
+            <trans-unit id="event.save.success">
+                <source>The event "%s" got saved</source>
+            </trans-unit>
+            <trans-unit id="event.save.success.title">
+                <source>Save successfull</source>
+            </trans-unit>
+            <trans-unit id="event.delete.success">
+                <source>The event "%s" got removed</source>
+            </trans-unit>
+            <trans-unit id="event.delete.success.title">
+                <source>Delete successfull</source>
             </trans-unit>
         </body>
     </file>

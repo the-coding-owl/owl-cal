@@ -37,32 +37,48 @@
                 <label class="form-label" for="owl-cal-event-startdate">
                     <f:translate key="event.startdate" />
                 </label>
-                <f:form.textfield class="form-control" type="date" id="owl-cal-event-startdate" property="starttime.date" />
+                <f:form.textfield class="form-control"
+                                  type="date"
+                                  id="owl-cal-event-startdate"
+                                  property="starttime.date"
+                                  value="{f:format.date(format:'Y-m-d',date:'{event.starttime}')}" />
                 <f:render partial="FieldError" section="field" arguments="{property: 'event.startdate'}" />
             </div>
             <div class="col-2">
                 <label class="form-label" for="owl-cal-event-starttime">
                     <f:translate key="event.starttime" />
                 </label>
-                <f:form.textfield class="form-control" type="time" id="owl-cal-event-starttime" property="starttime.time" />
+                <f:form.textfield class="form-control"
+                                  type="time"
+                                  id="owl-cal-event-starttime"
+                                  property="starttime.time"
+                                  value="{f:format.date(format:'H:i',date:'{event.starttime}')}" />
                 <f:render partial="FieldError" section="field" arguments="{property: 'event.starttime'}" />
             </div>
             <div class="col-3">
                 <label class="form-label" for="owl-cal-event-enddate">
                     <f:translate key="event.enddate" />
                 </label>
-                <f:form.textfield class="form-control" type="date" id="owl-cal-event-enddate" property="endtime.date" />
+                <f:form.textfield class="form-control"
+                                  type="date"
+                                  id="owl-cal-event-enddate"
+                                  property="endtime.date"
+                                  value="{f:format.date(format:'Y-m-d',date:'{event.endtime}')}" />
                 <f:render partial="FieldError" section="field" arguments="{property: 'event.enddate'}" />
             </div>
             <div class="col-2">
                 <label class="form-label" for="owl-cal-event-endtime">
                     <f:translate key="event.endtime" />
                 </label>
-                <f:form.textfield class="form-control" type="time" id="owl-cal-event-endtime" property="endtime.time" />
+                <f:form.textfield class="form-control"
+                                  type="time"
+                                  id="owl-cal-event-endtime"
+                                  property="endtime.time"
+                                  value="{f:format.date(format:'H:i',date:'{event.endtime}')}" />
                 <f:render partial="FieldError" section="field" arguments="{property: 'event.endtime'}" />
             </div>
             <div class="col-2">
-                <f:form.checkbox class="form-check-input" property="wholeDay" value="0" id="owl-cal-event-wholeDay" />
+                <f:form.checkbox class="form-check-input" property="wholeDay" value="1" id="owl-cal-event-wholeDay" />
                 <label class="form-check-label" for="owl-cal-event-wholeDay">
                     <f:translate key="event.wholeDay" />
                 </label>
@@ -73,12 +89,15 @@
                 </label>
                 <f:form.select class="form-select" property="timezone" id="owl-cal-event-timezone">
                     <f:for each="{timezones}" as="timezone">
-                        <option value="{timezone}">{timezone}</option>
+                        <f:if condition="{defaultTimezone}">
+                            <f:then><option value="{timezone}" selected>{timezone}</option></f:then>
+                            <f:else><option value="{timezone}">{timezone}</option></f:else>
+                        </f:if>
                     </f:for>
                 </f:form.select>
             </div>
             <div class="col-12">
-                <f:form.checkbox class="form-check-input" property="recurring" value="0" id="owl-cal-event-recurring" />
+                <f:form.checkbox class="form-check-input" property="recurring" value="1" id="owl-cal-event-recurring" />
                 <label class="form-check-label" for="owl-cal-event-recurring">
                     <f:translate key="event.recurring" />
                 </label>

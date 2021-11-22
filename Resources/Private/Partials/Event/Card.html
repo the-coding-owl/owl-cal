@@ -1,0 +1,25 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+    <f:section name="main">
+        <div class="card" data-id="{event.uid}">
+            <div class="card-body">
+                <span class="card-title">{event.title}</span><br>
+                <small class="card-subtitle">
+                    <f:format.date format="Y-m-d H:i">{event.starttime}</f:format.date>
+                </small><br>
+                <p class="card-text">{event.description}</p>
+                <f:link.action class="btn btn-secondary"
+                               action="edit"
+                               controller="Event"
+                               arguments="{event: event}">
+                               <i class="bi bi-pencil"></i>
+                </f:link.action>
+                <f:link.action class="btn btn-danger"
+                               action="delete"
+                               controller="Event"
+                               arguments="{event: event}">
+                               <i class="bi bi-trash"></i>
+                </f:link.action>
+            </div>
+        </div>
+    </f:section>
+</html>

@@ -19,6 +19,7 @@ namespace TheCodingOwl\OwlCal\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -45,10 +46,10 @@ class Event extends AbstractEntity {
      */
     protected bool $recurring = false;
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      * @Validate("NotEmpty")
      */
-    protected \DateTime $starttime;
+    protected ?\DateTime $starttime = null;
     /**
      * @var \DateTime|null
      */
@@ -82,14 +83,15 @@ class Event extends AbstractEntity {
      */
     protected string $icon = '';
     /**
-     * @var Calendar
+     * @var Calendar|null
      * @Validate("NotEmpty")
      */
-    protected Calendar $calendar;
+    protected ?Calendar $calendar = null;
     /**
-     * @var ObjectStorage<Attendee>
+     * @var ObjectStorage<Attendee>|null
+     * @Lazy
      */
-    protected $attendees;
+    protected ?ObjectStorage $attendees = null;
 
     public function __construct()
     {
@@ -367,7 +369,7 @@ class Event extends AbstractEntity {
      */
     public function getAttendees(): ObjectStorage
     {
-        return $this->attendees;
+        return $this->attendees ?? new ObjectStorage();
     }
 
     /**
@@ -418,13 +420,15 @@ class Event extends AbstractEntity {
             'place' => $this->place,
             'recurring' => $this->recurring,
             'starttime' => $this->starttime->format('r'),
-            'endtime' => $this->endtime->format('r'),
+            'endtime' => $this->endtime instanceof \DateTime ? $this->endtime->format('r') : '',
             'timezone' => $this->timezone,
             'wholeDay' => $this->wholeDay,
             'status' => $this->status,
             'wwwAddress' => $this->wwwAddress,
             'description' => $this->description,
-            'calendar' => $this->calendar->getUid()
+            'calendar' => $this->calendar->getUid(),
+            'icon' => $this->icon,
+            'attendees' => $this->attendees->count()
         ];
     }
 }

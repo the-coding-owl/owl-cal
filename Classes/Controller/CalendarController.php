@@ -210,7 +210,8 @@ class CalendarController extends ActionController {
     public function editAction(Calendar $calendar): ResponseInterface
     {
         $this->view->assign('calendar', $calendar);
-        return new HtmlResponse($this->view->render());
+        $this->pageRenderer->setBodyContent($this->view->render());
+        return $this->htmlResponse($this->pageRenderer->render());
     }
 
     /**
@@ -226,8 +227,47 @@ class CalendarController extends ActionController {
             return new JsonResponse($calendar->toArray());
         }
         $this->addFlashMessage(
-            LocalizationUtility::translate('calendar.save.success', $this->request->getControllerExtensionName()),
-            LocalizationUtility::translate('calendar.save.success.title', $this->request->getControllerExtensionName())
+            LocalizationUtility::translate(
+                'calendar.save.success',
+                $this->request->getControllerExtensionName(),
+                [$calendar->getTitle()]
+            ),
+            LocalizationUtility::translate(
+                'calendar.save.success.title',
+                $this->request->getControllerExtensionName()
+            )
+        );
+        return new RedirectResponse($this->uriBuilder->uriFor(
+            'list',
+            [],
+            $this->request->getControllerName(),
+            $this->request->getControllerExtensionName(),
+            $this->request->getPluginName()
+        ));
+    }
+
+    /**
+     * Delete the given calendar
+     *
+     * @param Calendar $calendar
+     * @return ResponseInterface
+     */
+    public function deleteAction(Calendar $calendar): ResponseInterface
+    {
+        $this->calendarRepository->remove($calendar);
+        if ($this->request->getFormat() === 'json') {
+            return new JsonResponse(['status' => 'success']);
+        }
+        $this->addFlashMessage(
+            LocalizationUtility::translate(
+                'calendar.delete.success',
+                $this->request->getControllerExtensionName(),
+                [$calendar->getTitle()]
+            ),
+            LocalizationUtility::translate(
+                'calendar.delete.success.title',
+                $this->request->getControllerExtensionName()
+            )
         );
         return new RedirectResponse($this->uriBuilder->uriFor(
             'list',

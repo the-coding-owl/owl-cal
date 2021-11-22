@@ -1,9 +1,9 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
     <f:layout name="Default" />
     <f:section name="main">
-        <h1><f:translate key="calendar.new" /></h1>
+        <h1><f:translate key="calendar.edit" /></h1>
         <f:form name="calendar" action="save" object="{calendar}">
-            <f:render partial="Calendar/FormFields" section="main" arguments="{calendar: calendar, owner: owner}" />
+            <f:render partial="Calendar/FormFields" section="main" arguments="{calendar: calendar, owner: calendar.owner}" />
             <f:form.button class="btn btn-lg btn-success" title="{f:translate(key:'calendar.save')}"><i class="bi bi-check"></i></f:form.button>
         </f:form>
     </f:section>
