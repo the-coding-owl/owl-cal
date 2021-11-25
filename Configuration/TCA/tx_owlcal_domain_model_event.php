@@ -41,6 +41,29 @@ return [
                 'default' => 0
             ]
         ],
+        'recurring_time' => [
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
+        'recurring_scale' => [
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
+        'recurring_times' => [
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
+        'recurring_until' => [
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'dbType' => 'datetime',
+                'eval' => 'datetime,null'
+            ]
+        ],
         'starttime' => [
             'config' => [
                 'type' => 'input',

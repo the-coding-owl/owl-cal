@@ -31,7 +31,10 @@ class Event extends AbstractEntity {
     public const STATUS_TENTATIVE = 'tentative';
     public const STATUS_CONFIRMED = 'confirmed';
     public const STATUS_CANCELED = 'canceled';
-
+    public const RECURRING_SCALE_DAYS = 'days';
+    public const RECURRING_SCALE_WEEKS = 'weeks';
+    public const RECURRING_SCALE_MONTHS = 'months';
+    public const RECURRING_SCALE_YEARS = 'years';
     /**
      * @var string
      * @Validate("NotEmpty")
@@ -45,6 +48,22 @@ class Event extends AbstractEntity {
      * @var bool
      */
     protected bool $recurring = false;
+    /**
+     * @var int
+     */
+    protected int $recurringTime = 0;
+    /**
+     * @var string
+     */
+    protected string $recurringScale = '';
+    /**
+     * @var int
+     */
+    protected int $recurringTimes = 0;
+    /**
+     * @var \DateTime|null
+     */
+    protected ?\DateTime $recurringUntil = null;
     /**
      * @var \DateTime|null
      * @Validate("NotEmpty")
@@ -161,6 +180,94 @@ class Event extends AbstractEntity {
     public function setRecurring(bool $recurring): self
     {
         $this->recurring = $recurring;
+        return $this;
+    }
+
+    /**
+     * Get the time of recurring
+     *
+     * @return int
+     */
+    public function getRecurringTime(): int
+    {
+        return $this->recurringTime;
+    }
+
+    /**
+     * Set the time of recurring
+     *
+     * @param int $time
+     * @return self
+     */
+    public function setRecurringTime(int $time): self
+    {
+        $this->recurringTime = $time;
+        return $this;
+    }
+
+    /**
+     * Get the recurring scale
+     *
+     * @return string
+     */
+    public function getRecurringScale(): string
+    {
+        return $this->recurringScale;
+    }
+
+    /**
+     * Set the recurring scale
+     *
+     * @param string $scale
+     * @return self
+     */
+    public function setRecurringScale(string $scale): self
+    {
+        $this->recurringScale = $scale;
+        return $this;
+    }
+
+    /**
+     * Get the amount of times of the recurrence
+     *
+     * @return int
+     */
+    public function getRecurringTimes(): int
+    {
+        return $this->recurringTimes;
+    }
+
+    /**
+     * Set the amount of times of the recurrence
+     *
+     * @param int $times
+     * @return self
+     */
+    public function setRecurringTimes(int $times): self
+    {
+        $this->recurringTimes = $times;
+        return $this;
+    }
+
+    /**
+     * Get the time until the recurrence ends
+     *
+     * @return \DateTime|null
+     */
+    public function getRecurringUntil(): ?\DateTime
+    {
+        return $this->recurringUntil;
+    }
+
+    /**
+     * Set the time untul the recurrence ends
+     *
+     * @param string $until
+     * @return self
+     */
+    public function setRecurringUntil(\DateTime $until): self
+    {
+        $this->recurringUntil = $until;
         return $this;
     }
 
