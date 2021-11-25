@@ -54,6 +54,7 @@ class Event extends AbstractEntity {
     protected int $recurringTime = 0;
     /**
      * @var string
+     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\RecurringScaleValidator")
      */
     protected string $recurringScale = '';
     /**
