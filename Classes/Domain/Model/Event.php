@@ -21,6 +21,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 
 /**
  * Event model
@@ -31,10 +32,6 @@ class Event extends AbstractEntity {
     public const STATUS_TENTATIVE = 'tentative';
     public const STATUS_CONFIRMED = 'confirmed';
     public const STATUS_CANCELED = 'canceled';
-    public const RECURRING_SCALE_DAYS = 'days';
-    public const RECURRING_SCALE_WEEKS = 'weeks';
-    public const RECURRING_SCALE_MONTHS = 'months';
-    public const RECURRING_SCALE_YEARS = 'years';
     /**
      * @var string
      * @Validate("NotEmpty")
@@ -49,14 +46,9 @@ class Event extends AbstractEntity {
      */
     protected bool $recurring = false;
     /**
-     * @var int
+     * @var Timing|null
      */
-    protected int $recurringTime = 0;
-    /**
-     * @var string
-     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\RecurringScaleValidator")
-     */
-    protected string $recurringScale = '';
+    protected ?Timing $recurrenceTiming = null;
     /**
      * @var int
      */
@@ -67,7 +59,7 @@ class Event extends AbstractEntity {
     protected ?\DateTime $recurringUntil = null;
     /**
      * @var \DateTime|null
-     * @Validate("NotEmpty")
+     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\NotEmptyValidator")
      */
     protected ?\DateTime $starttime = null;
     /**
@@ -112,10 +104,23 @@ class Event extends AbstractEntity {
      * @Lazy
      */
     protected ?ObjectStorage $attendees = null;
+    /**
+     * @var ObjectStorage<Reminder>|null
+     * @Lazy
+     */
+    protected ?ObjectStorage $reminders = null;
+
+    /**
+     * @var ObjectStorage<FileReference>|null
+     * @Lazy
+     */
+    protected ?ObjectStorage $files = null;
 
     public function __construct()
     {
         $this->attendees = new ObjectStorage();
+        $this->reminders = new ObjectStorage();
+        $this->files = new ObjectStorage();
     }
 
     /**
@@ -185,46 +190,24 @@ class Event extends AbstractEntity {
     }
 
     /**
-     * Get the time of recurring
+     * Get the recurrence timings
      *
-     * @return int
+     * @return Timing|null
      */
-    public function getRecurringTime(): int
+    public function getRecurrenceTiming(): ?Timing
     {
-        return $this->recurringTime;
+        return $this->recurrenceTiming;
     }
 
     /**
-     * Set the time of recurring
+     * Set the recurrence timing
      *
-     * @param int $time
+     * @param Timing $recurrenceTiming
      * @return self
      */
-    public function setRecurringTime(int $time): self
+    public function setRecurrenceTiming(Timing $recurrenceTiming): self
     {
-        $this->recurringTime = $time;
-        return $this;
-    }
-
-    /**
-     * Get the recurring scale
-     *
-     * @return string
-     */
-    public function getRecurringScale(): string
-    {
-        return $this->recurringScale;
-    }
-
-    /**
-     * Set the recurring scale
-     *
-     * @param string $scale
-     * @return self
-     */
-    public function setRecurringScale(string $scale): self
-    {
-        $this->recurringScale = $scale;
+        $this->recurrenceTiming = $recurrenceTiming;
         return $this;
     }
 
@@ -517,6 +500,97 @@ class Event extends AbstractEntity {
     }
 
     /**
+     * Get the reminders
+     *
+     * @return ObjectStorage
+     */
+    public function getReminders(): ObjectStorage
+    {
+        return $this->reminders ?? new ObjectStorage();
+    }
+
+    /**
+     * Set the reminders
+     *
+     * @param ObjectStorage<Reminder> $reminders
+     * @return self
+     */
+    public function setReminders(ObjectStorage $reminders): self
+    {
+        $this->reminders = $reminders;
+        return $this;
+    }
+
+    /**
+     * Add the given reminder
+     *
+     * @param Reminder $reminder
+     * @return self
+     */
+    public function addReminder(Reminder $reminder): self
+    {
+        $this->reminders->attach($reminder);
+        return $this;
+    }
+
+    /**
+     * Remove the given reminder
+     *
+     * @param Reminder $reminderToRemove
+     * @return self
+     */
+    public function removeReminder(Reminder $reminderToRemove): self
+    {
+        $this->reminders->detach($reminderToRemove);
+        return $this;
+    }
+
+    /**
+     * Get the files
+     *
+     * @return ObjectStorage
+     */
+    public function getFiles(): ObjectStorage
+    {
+        return $this->files ?? new ObjectStorage();
+    }
+
+    /**
+     * Set the files
+     *
+     * @param ObjectStorage<FileReference> $files
+     * @return self
+     */
+    public function setFiles(ObjectStorage $files): self
+    {
+        $this->files = $files;
+        return $this;
+    }
+
+    /**
+     * Add the given file
+     *
+     * @param FileReference $file
+     * @return self
+     */
+    public function addFile(FileReference $file): self
+    {
+        $this->files->attach($file);
+        return $this;
+    }
+
+    /**
+     * Remove the given file
+     *
+     * @param FileReference $fileToRemove
+     * @return self
+     */
+    public function removeFile(FileReference $fileToRemove): self
+    {
+        $this->files->detach($fileToRemove);
+        return $this;
+    }
+    /**
      * Create an array representation of the event
      *
      * @return array
@@ -536,7 +610,9 @@ class Event extends AbstractEntity {
             'description' => $this->description,
             'calendar' => $this->calendar->getUid(),
             'icon' => $this->icon,
-            'attendees' => $this->attendees->count()
+            'attendees' => $this->attendees->count(),
+            'reminders' => $this->reminders->count(),
+            'files' => $this->files->count()
         ];
     }
 }

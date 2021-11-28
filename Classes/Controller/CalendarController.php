@@ -23,10 +23,9 @@ use TheCodingOwl\OwlCal\Domain\Model\Dto\ICS;
 use TheCodingOwl\OwlCal\Domain\Repository\CalendarRepository;
 use TheCodingOwl\OwlCal\Domain\Repository\UserRepository;
 use TheCodingOwl\OwlCal\Session\ViewSession;
-use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
@@ -38,9 +37,9 @@ use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
  */
 class CalendarController extends ActionController {
     /**
-     * @var PageRenderer
+     * @var ModuleTemplateFactory
      */
-    protected PageRenderer $pageRenderer;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
     /**
      * @var CalendarRepository
@@ -58,13 +57,13 @@ class CalendarController extends ActionController {
     protected ViewSession $viewSession;
 
     public function __construct(
-        PageRenderer $pageRenderer,
+        ModuleTemplateFactory $moduleTemplateFactory,
         CalendarRepository $calendarRepository,
         UserRepository $userRepository,
         ViewSession $viewSession
     )
     {
-        $this->pageRenderer = $pageRenderer;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->calendarRepository = $calendarRepository;
         $this->userRepository = $userRepository;
         $this->viewSession = $viewSession;
@@ -86,8 +85,7 @@ class CalendarController extends ActionController {
                 $this->request->getPluginName()
             ));
         }
-        $this->pageRenderer->setBodyContent($this->view->render());
-        return $this->htmlResponse($this->pageRenderer->render());
+        return $this->createBackendResponse();
     }
 
     /**
@@ -101,9 +99,7 @@ class CalendarController extends ActionController {
         if ($this->request->getFormat() === 'json') {
             return new JsonResponse(['calendar' => $calendar->toArray()]);
         }
-
-        $this->view->assign('calendar', $calendar);
-        return new HtmlResponse($this->view->render());
+        return $this->createBackendResponse();
     }
 
     /**
@@ -118,8 +114,7 @@ class CalendarController extends ActionController {
         $owner = $this->userRepository->findCurrentUser();
         $this->view->assign('owner', $owner);
         $this->view->assign('calendar', $calendar);
-        $this->pageRenderer->setBodyContent($this->view->render());
-        return $this->htmlResponse($this->pageRenderer->render());
+        return $this->createBackendResponse();
     }
 
     /**
@@ -196,8 +191,7 @@ class CalendarController extends ActionController {
         $this->view->assign('months', range(1,12));
         $this->view->assign('years', range(1970, 2100));
         $this->view->assign('calendars', $calendars);
-        $this->pageRenderer->setBodyContent($this->view->render());
-        return $this->htmlResponse($this->pageRenderer->render());
+        return $this->createBackendResponse();
     }
 
     /**
@@ -210,8 +204,7 @@ class CalendarController extends ActionController {
     public function editAction(Calendar $calendar): ResponseInterface
     {
         $this->view->assign('calendar', $calendar);
-        $this->pageRenderer->setBodyContent($this->view->render());
-        return $this->htmlResponse($this->pageRenderer->render());
+        return $this->createBackendResponse();
     }
 
     /**
@@ -292,5 +285,17 @@ class CalendarController extends ActionController {
             $this->request->getControllerExtensionName(),
             $this->request->getPluginName()
         ));
+    }
+
+    /**
+     * Use the ModuleTemplateResponse to create a response object for the backend
+     *
+     * @return ResponseInterface
+     */
+    protected function createBackendResponse(): ResponseInterface
+    {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 }

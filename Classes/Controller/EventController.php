@@ -26,6 +26,7 @@ use TheCodingOwl\OwlCal\Domain\Repository\EventRepository;
 use TheCodingOwl\OwlCal\Domain\Repository\UserRepository;
 use TheCodingOwl\OwlCal\Property\TypeConverter\CombinedDateTimeTypeConverter;
 use TheCodingOwl\OwlCal\Session\ViewSession;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -42,9 +43,9 @@ use TYPO3\CMS\Extbase\Annotation\Validate;
  */
 class EventController extends ActionController {
     /**
-     * @var PageRenderer
+     * @var ModuleTemplateFactory
      */
-    protected PageRenderer $pageRenderer;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
     /**
      * @var CalendarRepository
@@ -67,14 +68,14 @@ class EventController extends ActionController {
     protected ViewSession $viewSession;
 
     public function __construct(
-        PageRenderer $pageRenderer,
+        ModuleTemplateFactory $moduleTemplateFactory,
         CalendarRepository $calendarRepository,
         EventRepository $eventRepository,
         UserRepository $userRepository,
         ViewSession $viewSession
     )
     {
-        $this->pageRenderer = $pageRenderer;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->calendarRepository = $calendarRepository;
         $this->eventRepository = $eventRepository;
         $this->userRepository = $userRepository;
@@ -111,8 +112,7 @@ class EventController extends ActionController {
         }
         $this->view->assign('events', $events);
         $this->view->assign('calendar', $calendar);
-        $this->pageRenderer->setBodyContent($this->view->render());
-        return $this->htmlResponse($this->pageRenderer->render());
+        return $this->createBackendResponse();
     }
 
     /**
@@ -128,8 +128,7 @@ class EventController extends ActionController {
         $this->setDefaultCalendar($calendar);
         $this->prepareEditViewVariables($calendar);
         $this->view->assign('event', $event);
-        $this->pageRenderer->setBodyContent($this->view->render());
-        return $this->htmlResponse($this->pageRenderer->render());
+        return $this->createBackendResponse();
     }
 
     /**
@@ -187,8 +186,7 @@ class EventController extends ActionController {
     {
         $this->prepareEditViewVariables();
         $this->view->assign('event', $event);
-        $this->pageRenderer->setBodyContent($this->view->render());
-        return $this->htmlResponse($this->pageRenderer->render());
+        return $this->createBackendResponse();
     }
 
     /**
@@ -265,7 +263,7 @@ class EventController extends ActionController {
             $this->request->getPluginName()
         ));
     }
-    
+
     /**
      * Add the list of calendars of the current user to the view
      *
@@ -344,5 +342,17 @@ class EventController extends ActionController {
             ->getPropertyMappingConfiguration()
             ->forProperty($property)
             ->setTypeConverter(new $typeConverter());
+    }
+
+    /**
+     * Use the ModuleTemplateResponse to create a response object for the backend
+     *
+     * @return ResponseInterface
+     */
+    protected function createBackendResponse(): ResponseInterface
+    {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 }

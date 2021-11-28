@@ -17,38 +17,30 @@
 
 namespace TheCodingOwl\OwlCal\Validation\Validator;
 
-use TheCodingOwl\OwlCal\Domain\Model\Event;
-use TheCodingOwl\OwlCal\Exception\InvalidParameterTypeException;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /**
- * Validator that checks if the input is a valid scale for the recurrence
+ * Validates a value for emptyness.
+ * It also respects the combined DateTime format used in this extension
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class RecurringScaleValidator extends AbstractValidator {
+class NotEmptyValidator extends AbstractValidator {
     /**
-     * Check if the input is a valid recurrence
+     * Checks if the given value is valid
      *
-     * @param string $value
+     * @param mixed $value
      * @return void
-     * @throws InvalidParameterTypeException if the given value is not a string
      */
     public function isValid($value)
     {
-        if (!is_string($value)) {
-            throw new InvalidParameterTypeException('The given value is not a string!');
-        }
-        if ($value === '') {
+        if (empty($value)) {
+            $this->addError('The property must not be empty!', 1638038373);
             return;
         }
-        if(!in_array($value, [
-            Event::RECURRING_SCALE_DAYS,
-            Event::RECURRING_SCALE_MONTHS,
-            Event::RECURRING_SCALE_WEEKS,
-            Event::RECURRING_SCALE_YEARS
-        ])) {
-            $this->addError('The given value is not a valid recurrence!', 1637866215);
+        if (is_array($value) && isset($value['date']) && empty($value['date'])) {
+            $this->addError('The property must not be empty!', 1638038373);
+            return;
         }
     }
 }

@@ -41,14 +41,10 @@ return [
                 'default' => 0
             ]
         ],
-        'recurring_time' => [
+        'recurrence_timing' => [
             'config' => [
-                'type' => 'input'
-            ]
-        ],
-        'recurring_scale' => [
-            'config' => [
-                'type' => 'input'
+                'type' => 'inline',
+                'foreign_table' => 'tx_owlcal_domain_model_timing'
             ]
         ],
         'recurring_times' => [
@@ -117,6 +113,21 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_owlcal_domain_model_calendar'
             ]
+        ],
+        'attendees' => [
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_owlcal_domain_model_attendee'
+            ]
+        ],
+        'reminders' => [
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_owlcal_domain_model_reminder'
+            ]
+        ],
+        'files' => [
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('files')
         ]
     ],
     'palettes' => [],
