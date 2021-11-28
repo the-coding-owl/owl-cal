@@ -44,7 +44,9 @@ return [
         'recurrence_timing' => [
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_owlcal_domain_model_timing'
+                'foreign_table' => 'tx_owlcal_domain_model_timing',
+                'foreign_field' => 'uid_foreign',
+                'foreign_table_field' => 'foreign_table'
             ]
         ],
         'recurring_times' => [
@@ -117,13 +119,15 @@ return [
         'attendees' => [
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_owlcal_domain_model_attendee'
+                'foreign_table' => 'tx_owlcal_domain_model_attendee',
+                'foreign_field' => 'event'
             ]
         ],
         'reminders' => [
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_owlcal_domain_model_reminder'
+                'foreign_table' => 'tx_owlcal_domain_model_reminder',
+                'foreign_field' => 'event'
             ]
         ],
         'files' => [

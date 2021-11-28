@@ -32,7 +32,10 @@ return [
         ],
         'timing' => [
             'config' => [
-                'type' => 'input'
+                'type' => 'inline',
+                'foreign_table' => 'tx_owlcal_domain_model_timing',
+                'foreign_field' => 'uid_foreign',
+                'foreign_table_field' => 'foreign_table'
             ]
         ],
         'recurring' => [
@@ -49,7 +52,9 @@ return [
         'recurrence_timing' => [
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_owlcal_domain_model_timing'
+                'foreign_table' => 'tx_owlcal_domain_model_timing',
+                'foreign_field' => 'uid_foreign',
+                'foreign_table_field' => 'foreign_table'
             ]
         ],
         'remindAt' => [

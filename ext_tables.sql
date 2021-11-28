@@ -30,7 +30,8 @@ CREATE TABLE tx_owlcal_domain_model_attendee (
     name varchar(255) DEFAULT '' NOT NULL,
     email varchar(255) DEFAULT '' NOT NULL,
     participation varchar(255) DEFAULT '' NOT NULL,
-    role varchar(255) DEFAULT '' NOT NULL
+    role varchar(255) DEFAULT '' NOT NULL,
+    event int(11) unsigned DEFAULT '0' NOT NULL
 );
 
 CREATE TABLE tx_owlcal_domain_model_reminder (
@@ -39,10 +40,13 @@ CREATE TABLE tx_owlcal_domain_model_reminder (
     recurring TINYINT(3) DEFAULT '0' NOT NULL,
     recurrence_times int(11) DEFAULT '0' NOT NULL,
     recurrence_timing int(11) unsigned DEFAULT '0' NOT NULL,
-    remindAt varchar(255) DEFAULT '' NOT NULL
+    remindAt varchar(255) DEFAULT '' NOT NULL,
+    event int(11) unsigned DEFAULT '0' NOT NULL
 );
 
 CREATE TABLE tx_owlcal_domain_model_timing (
     time int(11) unsigned DEFAULT '0' NOT NULL,
-    scale varchar(255) DEFAULT '' NOT NULL
+    scale varchar(255) DEFAULT '' NOT NULL,
+    foreign_uid int(11) unsigned DEFAULT '0' NOT NULL
+    foreign_table varchar(255) DEFAULT '' NOT NULL
 );
