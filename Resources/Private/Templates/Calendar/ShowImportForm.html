@@ -1,0 +1,24 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+    <f:layout name="Default" />
+    <f:section name="main">
+        <f:render partial="FieldError" section="main" />
+        <f:form action="import" name="calendar" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="owl-cal-calendar-import-file" class="form-label">
+                        <f:translate key="calendar.import.file" />
+                    </label>
+                    <f:form.upload name="calendar" id="owl-cal-calendar-import-file" class="form-control" />
+                </div>
+            </div>
+            <f:form.button class="btn btn-lg btn-success" title="{f:translate(key:'calendar.import.btn')}">
+                <i class="bi bi-upload"></i>
+            </f:form.button>
+        </f:form>
+    </f:section>
+    <f:section name="navigation">
+        <f:link.action action="list" controller="Calendar" class="btn btn-lg btn-primary" title="{f:translate(key:'back')}">
+            <i class="bi bi-arrow-left"></i>
+        </f:link.action>
+    </f:section>
+</html>

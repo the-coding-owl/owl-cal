@@ -12,6 +12,18 @@
             <trans-unit id="calendar.edit">
                 <source>Edit calendar</source>
             </trans-unit>
+            <trans-unit id="calendar.import">
+                <source>Import calendar from ICS</source>
+            </trans-unit>
+            <trans-unit id="calendar.import.file">
+                <source>Choose ICS file to import</source>
+            </trans-unit>
+            <trans-unit id="calendar.import.title">
+                <source>Import calendar from ICS</source>
+            </trans-unit>
+            <trans-unit id="calendar.import.btn">
+                <source>Import</source>
+            </trans-unit>
             <trans-unit id="calendar.day.mo">
                 <source>Monday</source>
             </trans-unit>
@@ -125,6 +137,12 @@
             </trans-unit>
             <trans-unit id="calendar.view.nextYear">
                 <source>Next year</source>
+            </trans-unit>
+            <trans-unit id="calendar.import.successfull">
+                <source>Calendar "%s" successfully imported</source>
+            </trans-unit>
+            <trans-unit id="calendar.import.successfull.title">
+                <source>Import successfull</source>
             </trans-unit>
             <trans-unit id="event.title">
                 <source>Title</source>

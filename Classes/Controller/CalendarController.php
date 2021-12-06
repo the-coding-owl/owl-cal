@@ -19,9 +19,9 @@ namespace TheCodingOwl\OwlCal\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TheCodingOwl\OwlCal\Domain\Model\Calendar;
-use TheCodingOwl\OwlCal\Domain\Model\Dto\ICS;
 use TheCodingOwl\OwlCal\Domain\Repository\CalendarRepository;
 use TheCodingOwl\OwlCal\Domain\Repository\UserRepository;
+use TheCodingOwl\OwlCal\Property\TypeConverter\IcsFileConverter;
 use TheCodingOwl\OwlCal\Session\ViewSession;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -271,13 +271,50 @@ class CalendarController extends ActionController {
         ));
     }
 
-    public function importAction(ICS $calendar)
+    /**
+     * Show the form for importing a calendar
+     *
+     * @return ResponseInterface
+     */
+    public function showImportFormAction(): ResponseInterface
     {
-        $newCalendar = $this->calendarRepository->import($calendar);
+        return $this->createBackendResponse();
+    }
+
+    /**
+     * Set the type converter for the import action
+     *
+     * @return void
+     */
+    public function initializeImportAction(): void
+    {
+        $this->arguments->getArgument('calendar')
+            ->getPropertyMappingConfiguration()
+            ->setTypeConverter(new IcsFileConverter());
+    }
+
+    /**
+     * Import a calendar via ics file
+     *
+     * @param Calendar $calendar
+     */
+    public function importAction(Calendar $calendar)
+    {
+        $this->calendarRepository->add($calendar);
         if ($this->request->getFormat() === 'json') {
-            return new JsonResponse($newCalendar->toArray());
+            return new JsonResponse($calendar->toArray());
         }
-        $this->addFlashMessage('New calendar imported successfully');
+        $this->addFlashMessage(
+            LocalizationUtility::translate(
+                'calendar.import.successfull',
+                $this->request->getControllerExtensionName(),
+                [$calendar->getTitle()]
+            ),
+            LocalizationUtility::translate(
+                'calendar.import.successfull.title',
+                $this->request->getControllerExtensionName()
+            ),
+        );
         return new RedirectResponse($this->uriBuilder->uriFor(
             'list',
             [],

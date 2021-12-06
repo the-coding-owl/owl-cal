@@ -133,6 +133,9 @@
                 <f:link.action class="btn btn-success" action="new" controller="Calendar" title="{f:translate(key:'calendar.new')}">
                     <i class="bi bi-calendar-plus"></i>
                 </f:link.action>
+                <f:link.action class="btn btn-info" action="showImportForm" controller="Calendar" title="{f:translate(key:'calendar.import')}">
+                    <i class="bi bi-upload"></i>
+                </f:link.action>
             </div>
             <f:for each="{calendars}" as="calendar">
                 <div class="col-12 mb-3">

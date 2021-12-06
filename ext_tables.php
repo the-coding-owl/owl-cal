@@ -7,7 +7,7 @@
         'tx_owlcal',
         '',
         [
-            \TheCodingOwl\OwlCal\Controller\CalendarController::class => 'index,list,new,edit,create,save,delete',
+            \TheCodingOwl\OwlCal\Controller\CalendarController::class => 'index,list,new,edit,create,save,delete,showImportForm,import',
             \TheCodingOwl\OwlCal\Controller\EventController::class => 'new,edit,create,save,delete'
         ],
         [
