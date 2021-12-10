@@ -25,7 +25,12 @@ return [
         'delete' => 'deleted'
     ],
     'columns' => [
-        'title' => [
+        'summary' => [
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
+        'identifier' => [
             'config' => [
                 'type' => 'input'
             ]
@@ -41,12 +46,9 @@ return [
                 'default' => 0
             ]
         ],
-        'recurrence_timing' => [
+        'recurrence_interval' => [
             'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'tx_owlcal_domain_model_timing',
-                'foreign_field' => 'uid_foreign',
-                'foreign_table_field' => 'foreign_table'
+                'type' => 'input'
             ]
         ],
         'recurring_times' => [

@@ -17,32 +17,26 @@
 
 namespace TheCodingOwl\OwlCal\Validation\Validator;
 
-use TheCodingOwl\OwlCal\Exception\InvalidParameterTypeException;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /**
- * Validator that checks if the input is a valid DateTimeZone
- *
+ * This validator is used to validate the calendar scale
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class DateTimeZoneValidator extends AbstractValidator {
+class ScaleValidator extends AbstractValidator {
     /**
-     * Validate the given timezone against the list of timezones from PHP
+     * Checks if the given value is a valid color code
      *
-     * @param string $value
+     * @param string $value The color code to check
      * @return void
-     * @throws InvalidParameterTypeException if the given value is not a string
      */
     public function isValid($value)
     {
-        if (!is_string($value)) {
-            throw new InvalidParameterTypeException('The given value is not a string!');
-        }
-        if ($value === '') {
+        if (empty($value)) {
             return;
         }
-        if (!in_array($value, \DateTimeZone::listIdentifiers())) {
-            $this->addError('The given value is not a valid Timezone!', 1637512930);
+        if (strpos($value, '#') !== 0 && !(strlen($value) === 7 || strlen($value) === 4)) {
+            $this->addError('The given value is not a valid color code!', 1639151989);
         }
     }
 }

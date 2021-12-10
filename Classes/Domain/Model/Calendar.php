@@ -27,23 +27,41 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
 class Calendar extends AbstractEntity {
+    public const SCALE_DEFAULT = 'GREGORIAN';
+    public const VERSION = '2.0';
+
+    /**
+     * @var string
+     * @Validate("NotEmpty")
+     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\Calendar\ScaleValidator")
+     */
+    protected $scale = self::SCALE_DEFAULT;
     /**
      * @var string
      * @Validate("NotEmpty")
      */
     protected string $title = '';
-
     /**
      * @var string
+     * @Validate("NotEmpty")
+     */
+    protected string $identifier = '';
+    /**
+     * @var string
+     * @Validate("NotEmpty")
+     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\Calendar\VersionValidator")
+     */
+    protected string $version = self::VERSION;
+    /**
+     * @var string
+     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\Calendar\ColorValidator")
      */
     protected string $color = '';
-
     /**
      * @var ObjectStorage<Event>
      * @Lazy
      */
     protected $events;
-
     /**
      * @var int
      * @Validate("NotEmpty")
@@ -54,6 +72,28 @@ class Calendar extends AbstractEntity {
     public function __construct()
     {
         $this->events = new ObjectStorage();
+    }
+
+    /**
+     * Get the scale
+     *
+     * @return string
+     */
+    public function getScale(): string
+    {
+        return $this->scale;
+    }
+
+    /**
+     * Set the scale
+     *
+     * @param string $scale
+     * @return self
+     */
+    public function setScale(string $scale): self
+    {
+        $this->scale = $scale;
+        return $this;
     }
 
     /**
@@ -75,6 +115,50 @@ class Calendar extends AbstractEntity {
     public function setTitle(string $title): self
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Get the identifier
+     *
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * Set the identifier
+     *
+     * @param string $identifier
+     * @return self
+     */
+    public function setIdentifier(string $identifier): self
+    {
+        $this->identifier = $identifier;
+        return $this;
+    }
+
+    /**
+     * Get the version
+     *
+     * @return string
+     */
+    public function getVersion(): string
+    {
+        return $this->version;
+    }
+
+    /**
+     * Set the version
+     *
+     * @param string $version
+     * @return self
+     */
+    public function setVersion(string $version): self
+    {
+        $this->version = $version;
         return $this;
     }
 

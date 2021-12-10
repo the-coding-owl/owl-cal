@@ -180,7 +180,7 @@ class CalendarController extends ActionController {
         $daysOfMonth = $currentDate->format('t');
         $date = clone $currentDate;
         $date->modify('-' . $currentDate->format('d') . ' days');
-        for($i = 1; $i <= $daysOfMonth; $i++) {
+        for ($i = 1; $i <= $daysOfMonth; $i++) {
             $date->modify('+1 day');
             $week = $date->format('W');
             $weeks[$week][] = clone $date;
@@ -188,7 +188,7 @@ class CalendarController extends ActionController {
         $this->view->assign('weeks', $weeks);
         $this->view->assign('currentMonth', $currentDate->format('n'));
         $this->view->assign('currentYear', $currentDate->format('Y'));
-        $this->view->assign('months', range(1,12));
+        $this->view->assign('months', range(1, 12));
         $this->view->assign('years', range(1970, 2100));
         $this->view->assign('calendars', $calendars);
         return $this->createBackendResponse();

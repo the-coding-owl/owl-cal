@@ -17,21 +17,20 @@
 
 namespace TheCodingOwl\OwlCal\Domain\Model;
 
+use TheCodingOwl\OwlCal\Domain\Interface\AttachmentsInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Reminder model
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Reminder extends AbstractEntity {
+class Reminder extends AbstractEntity implements AttachmentsInterface {
     public const TYPE_PUSH = 'push';
     public const TYPE_EMAIL = 'email';
-    public const BEFORE_BEGINNING_OF_EVENT = 'before beginning';
-    public const AFTER_BEGINNING_OF_EVENT = 'after beginning';
-    public const BEFORE_END_OF_EVENT = 'before end';
-    public const AFTER_END_OF_EVENT = 'after end';
 
     /**
      * @var string
@@ -40,26 +39,36 @@ class Reminder extends AbstractEntity {
      */
     protected string $type = '';
     /**
-     * @var Timing|null
+     * @var string
      */
-    protected ?Timing $timing = null;
-    /**
-     * @var bool
-     */
-    protected bool $recurring = false;
-    /**
-     * @var int
-     */
-    protected int $recurringTimes = 0;
-    /**
-     * @var Timing|null
-     */
-    protected ?Timing $recurrenceTiming = null;
+    protected string $identifier = '';
     /**
      * @var string
-     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\RemindAtValidator")
      */
-    protected $remindAt = self::BEFORE_BEGINNING_OF_EVENT;
+    protected string $description = '';
+    /**
+     * @var string
+     */
+    protected string $interval = '';
+    /**
+     * @var ObjectStorage<Recurrence>|null
+     */
+    protected ?ObjectStorage $recurrences = null;
+    /**
+     * @var Event|null
+     */
+    protected ?Event $event = null;
+    /**
+     * @var ObjectStorage<FileReference>|null
+     * @Lazy
+     */
+    protected ?ObjectStorage $files = null;
+
+    public function __construct()
+    {
+        $this->recurrences = new ObjectStorage();
+        $this->files = new ObjectStorage();
+    }
 
     /**
      * Get the type
@@ -80,6 +89,50 @@ class Reminder extends AbstractEntity {
     public function setType(string $type): self
     {
         $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * Get the identifier
+     *
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * Set the identifier
+     *
+     * @param string $identifier
+     * @return self
+     */
+    public function setIdentifier(string $identifier): self
+    {
+        $this->identifier = $identifier;
+        return $this;
+    }
+
+    /**
+     * Get the description
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the description
+     *
+     * @param string $description
+     * @return self
+     */
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
         return $this;
     }
 
@@ -128,112 +181,159 @@ class Reminder extends AbstractEntity {
     }
 
     /**
-     * Get the timing
-     *
-     * @return Timing|null
-     */
-    public function getTiming(): ?Timing
-    {
-        return $this->timing;
-    }
-
-    /**
-     * Set the timing
-     *
-     * @param Timing $timing
-     * @return self
-     */
-    public function setTiming(Timing $timing): self
-    {
-        $this->timing = $timing;
-        return $this;
-    }
-
-    /**
-     * Is recurring
-     *
-     * @return bool
-     */
-    public function isRecurring(): bool
-    {
-        return $this->recurring;
-    }
-
-    /**
-     * Set recurring
-     *
-     * @param bool $recurring
-     * @return self
-     */
-    public function setRecurring(bool $recurring): self
-    {
-        $this->recurring = $recurring;
-        return $this;
-    }
-
-    /**
-     * Get the recurrence times
-     *
-     * @return int
-     */
-    public function getRecurrenceTimes(): int
-    {
-        return $this->recurrenceTimes;
-    }
-
-    /**
-     * Set the recurrence times
-     *
-     * @param int $recurrenceTimes
-     * @return self
-     */
-    public function setRecurrenceTimes(int $recurrenceTimes): self
-    {
-        $this->recurrenceTimes = $recurrenceTimes;
-        return $this;
-    }
-
-    /**
-     * Get the recurrence timing
-     *
-     * @return Timing|null
-     */
-    public function getRecurrenceTiming(): ?Timing
-    {
-        return $this->recurrenceTiming;
-    }
-
-    /**
-     * Set the recurrence timing
-     *
-     * @param Timing $recurrenceTiming
-     * @return self
-     */
-    public function setRecurrenceTiming(Timing $recurrenceTiming): self
-    {
-        $this->recurrenceTiming = $recurrenceTiming;
-        return $this;
-    }
-
-    /**
-     * Get when the reminder will trigger
+     * Get the interval
      *
      * @return string
      */
-    public function getRemindAt(): string
+    public function getInterval(): string
     {
-        return $this->remindAt;
+        return $this->interval;
     }
 
     /**
-     * Set when the reminder will trigger
+     * Returns a DateInterval representation of the interval
      *
-     * @param string $remindAt
+     * @return \DateInterval
+     */
+    public function getDateInterval(): \DateInterval
+    {
+        return new \DateInterval($this->interval);
+    }
+
+    /**
+     * Set the interval
+     *
+     * @param string $timing
      * @return self
      */
-    public function setRemindAt(string $remindAt): self
+    public function setInterval(string $interval): self
     {
-        $this->remindAt = $remindAt;
+        $this->interval = $interval;
+        return $this;
+    }
+
+    /**
+     * Set the interval via a given DateInterval
+     *
+     * @param \DateInterval $dateInterval
+     * @return self
+     */
+    public function setDateInterval(\DateInterval $dateInterval): self
+    {
+        $this->interval = $dateInterval->format('P%dDT%hH%iM%sS');
+        return $this;
+    }
+
+    /**
+     * Get all recurrences
+     *
+     * @return ObjectStorage
+     */
+    public function getRecurrences(): ObjectStorage
+    {
+        return $this->recurrences ?? new ObjectStorage();
+    }
+
+    /**
+     * Set all recurrences
+     *
+     * @param ObjectStorage $recurrences
+     * @return self
+     */
+    public function setRecurrences(ObjectStorage $recurrences): self
+    {
+        $this->recurrences = $recurrences;
+        return $this;
+    }
+
+    /**
+     * Add a recurrence
+     *
+     * @param Recurrence $recurrence
+     * @return self
+     */
+    public function addRecurrence(Recurrence $recurrence): self
+    {
+        $this->recurrences->attach($recurrence);
+        return $this;
+    }
+
+    /**
+     * Remove a recurrence
+     *
+     * @param Recurrence $recurrenceToRemove
+     * @return self
+     */
+    public function removeRecurrence(Recurrence $recurrenceToRemove): self
+    {
+        $this->recurrences->detach($recurrenceToRemove);
+        return $this;
+    }
+
+    /**
+     * Get the event
+     *
+     * @return Event
+     */
+    public function getEvent(): Event
+    {
+        return $this->event;
+    }
+
+    /**
+     * Set the event
+     *
+     * @param Event $event
+     * @return self
+     */
+    public function setEvent(Event $event): self
+    {
+        $this->event = $event;
+        return $this;
+    }
+    /**
+     * Get the files
+     *
+     * @return ObjectStorage
+     */
+    public function getFiles(): ObjectStorage
+    {
+        return $this->files ?? new ObjectStorage();
+    }
+
+    /**
+     * Set the files
+     *
+     * @param ObjectStorage<FileReference> $files
+     * @return self
+     */
+    public function setFiles(ObjectStorage $files): self
+    {
+        $this->files = $files;
+        return $this;
+    }
+
+    /**
+     * Add the given file
+     *
+     * @param FileReference $file
+     * @return self
+     */
+    public function addFile(FileReference $file): self
+    {
+        $this->files->attach($file);
+        return $this;
+    }
+
+    /**
+     * Remove the given file
+     *
+     * @param FileReference $fileToRemove
+     * @return self
+     */
+    public function removeFile(FileReference $fileToRemove): self
+    {
+        $this->files->detach($fileToRemove);
         return $this;
     }
 }

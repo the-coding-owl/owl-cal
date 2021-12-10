@@ -30,12 +30,19 @@ return [
                 'type' => 'input'
             ]
         ],
-        'timing' => [
+        'identifier' => [
             'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'tx_owlcal_domain_model_timing',
-                'foreign_field' => 'uid_foreign',
-                'foreign_table_field' => 'foreign_table'
+                'type' => 'input'
+            ]
+        ],
+        'description' => [
+            'config' => [
+                'type' => 'text'
+            ]
+        ],
+        'interval' => [
+            'config' => [
+                'type' => 'input'
             ]
         ],
         'recurring' => [
@@ -49,17 +56,21 @@ return [
                 'type' => 'input'
             ]
         ],
-        'recurrence_timing' => [
+        'recurrence_interval' => [
             'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'tx_owlcal_domain_model_timing',
-                'foreign_field' => 'uid_foreign',
-                'foreign_table_field' => 'foreign_table'
+                'type' => 'input'
             ]
         ],
         'remindAt' => [
             'config' => [
                 'type' => 'input'
+            ]
+        ],
+        'event' => [
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'tx_owlcal_domain_model_event'
             ]
         ]
     ],

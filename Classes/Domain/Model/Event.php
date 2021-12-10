@@ -17,6 +17,7 @@
 
 namespace TheCodingOwl\OwlCal\Domain\Model;
 
+use TheCodingOwl\OwlCal\Domain\Interface\AttachmentsInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
@@ -27,7 +28,7 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
  * Event model
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Event extends AbstractEntity {
+class Event extends AbstractEntity implements AttachmentsInterface {
     public const STATUS_NONE = 'none';
     public const STATUS_TENTATIVE = 'tentative';
     public const STATUS_CONFIRMED = 'confirmed';
@@ -36,42 +37,28 @@ class Event extends AbstractEntity {
      * @var string
      * @Validate("NotEmpty")
      */
-    protected string $title = '';
+    protected string $summary = '';
+    /**
+     * @var string
+     */
+    protected string $identifier = '';
     /**
      * @var string
      */
     protected string $place = '';
     /**
-     * @var bool
+     * @var ObjectStorage<Recurrence>|null
      */
-    protected bool $recurring = false;
+    protected ?ObjectStorage $recurrences = null;
     /**
-     * @var Timing|null
-     */
-    protected ?Timing $recurrenceTiming = null;
-    /**
-     * @var int
-     */
-    protected int $recurringTimes = 0;
-    /**
-     * @var \DateTime|null
-     */
-    protected ?\DateTime $recurringUntil = null;
-    /**
-     * @var \DateTime|null
+     * @var Date|null
      * @Validate("TheCodingOwl\OwlCal\Validation\Validator\NotEmptyValidator")
      */
-    protected ?\DateTime $starttime = null;
+    protected ?Date $starttime = null;
     /**
-     * @var \DateTime|null
+     * @var Date|null
      */
-    protected ?\DateTime $endtime = null;
-    /**
-     * @var string
-     * @Validate("NotEmpty")
-     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\DateTimeZoneValidator")
-     */
-    protected string $timezone = '';
+    protected ?Date $endtime = null;
     /**
      * @var bool
      */
@@ -94,6 +81,14 @@ class Event extends AbstractEntity {
      * @var string
      */
     protected string $icon = '';
+    /**
+     * @var Date|null
+     */
+    protected ?Date $crdate = null;
+    /**
+     * @var Date|null
+     */
+    protected ?Date $tstamp = null;
     /**
      * @var Calendar|null
      * @Validate("NotEmpty")
@@ -121,27 +116,50 @@ class Event extends AbstractEntity {
         $this->attendees = new ObjectStorage();
         $this->reminders = new ObjectStorage();
         $this->files = new ObjectStorage();
+        $this->recurrences = new ObjectStorage();
     }
 
     /**
-     * Get the title
+     * Get the summary
      *
      * @return string
      */
-    public function getTitle(): string
+    public function getSummary(): string
     {
-        return $this->title;
+        return $this->summary;
     }
 
     /**
-     * Set the title
+     * Set the summary
      *
-     * @param string $title
+     * @param string $summary
      * @return self
      */
-    public function setTitle(string $title): self
+    public function setSummary(string $summary): self
     {
-        $this->title = $title;
+        $this->summary = $summary;
+        return $this;
+    }
+
+    /**
+     * Get the identifier
+     *
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * Set the identifier
+     *
+     * @param string $identifier
+     * @return self
+     */
+    public function setIdentifier(string $identifier): self
+    {
+        $this->identifier = $identifier;
         return $this;
     }
 
@@ -168,99 +186,57 @@ class Event extends AbstractEntity {
     }
 
     /**
-     * Is recurring
+     * Get all recurrences
      *
-     * @return bool
+     * @return ObjectStorage
      */
-    public function isRecurring(): bool
+    public function getRecurrences(): ObjectStorage
     {
-        return $this->recurring;
+        return $this->recurrences ?? new ObjectStorage();
     }
 
     /**
-     * Set recurring
+     * Set all recurrences
      *
-     * @param bool $recurring
+     * @param ObjectStorage $recurrences
      * @return self
      */
-    public function setRecurring(bool $recurring): self
+    public function setRecurrences(ObjectStorage $recurrences): self
     {
-        $this->recurring = $recurring;
+        $this->recurrences = $recurrences;
         return $this;
     }
 
     /**
-     * Get the recurrence timings
+     * Add a recurrence
      *
-     * @return Timing|null
-     */
-    public function getRecurrenceTiming(): ?Timing
-    {
-        return $this->recurrenceTiming;
-    }
-
-    /**
-     * Set the recurrence timing
-     *
-     * @param Timing $recurrenceTiming
+     * @param Recurrence $recurrence
      * @return self
      */
-    public function setRecurrenceTiming(Timing $recurrenceTiming): self
+    public function addRecurrence(Recurrence $recurrence): self
     {
-        $this->recurrenceTiming = $recurrenceTiming;
+        $this->recurrences->attach($recurrence);
         return $this;
     }
 
     /**
-     * Get the amount of times of the recurrence
+     * Remove a recurrence
      *
-     * @return int
-     */
-    public function getRecurringTimes(): int
-    {
-        return $this->recurringTimes;
-    }
-
-    /**
-     * Set the amount of times of the recurrence
-     *
-     * @param int $times
+     * @param Recurrence $recurrenceToRemove
      * @return self
      */
-    public function setRecurringTimes(int $times): self
+    public function removeRecurrence(Recurrence $recurrenceToRemove): self
     {
-        $this->recurringTimes = $times;
-        return $this;
-    }
-
-    /**
-     * Get the time until the recurrence ends
-     *
-     * @return \DateTime|null
-     */
-    public function getRecurringUntil(): ?\DateTime
-    {
-        return $this->recurringUntil;
-    }
-
-    /**
-     * Set the time untul the recurrence ends
-     *
-     * @param string $until
-     * @return self
-     */
-    public function setRecurringUntil(\DateTime $until): self
-    {
-        $this->recurringUntil = $until;
+        $this->recurrences->detach($recurrenceToRemove);
         return $this;
     }
 
     /**
      * Get starttime
      *
-     * @return \DateTime
+     * @return Date
      */
-    public function getStarttime(): \DateTime
+    public function getStarttime(): Date
     {
         return $this->starttime;
     }
@@ -268,10 +244,10 @@ class Event extends AbstractEntity {
     /**
      * Set starttime
      *
-     * @param \DateTime $starttime
+     * @param Date $starttime
      * @return self
      */
-    public function setStarttime(\DateTime $starttime): self
+    public function setStarttime(Date $starttime): self
     {
         $this->starttime = $starttime;
         return $this;
@@ -280,9 +256,9 @@ class Event extends AbstractEntity {
     /**
      * Get endtime
      *
-     * @return \DateTime|null
+     * @return Date|null
      */
-    public function getEndtime(): ?\DateTime
+    public function getEndtime(): ?Date
     {
         return $this->endtime;
     }
@@ -290,34 +266,12 @@ class Event extends AbstractEntity {
     /**
      * Set endtime
      *
-     * @param \DateTime|null $endtime
+     * @param Date|null $endtime
      * @return self
      */
-    public function setEndtime(\DateTime $endtime = null): self
+    public function setEndtime(Date $endtime = null): self
     {
         $this->endtime = $endtime;
-        return $this;
-    }
-
-    /**
-     * Get the timezone
-     *
-     * @return string
-     */
-    public function getTimezone(): string
-    {
-        return $this->timezone;
-    }
-
-    /**
-     * Set the timezone
-     *
-     * @param string $timezone
-     * @return self
-     */
-    public function setTimezone(string $timezone): self
-    {
-        $this->timezone = $timezone;
         return $this;
     }
 
@@ -590,6 +544,51 @@ class Event extends AbstractEntity {
         $this->files->detach($fileToRemove);
         return $this;
     }
+
+    /**
+     * Get the crdate
+     *
+     * @return Date
+     */
+    public function getCrdate(): Date
+    {
+        return $this->crdate;
+    }
+
+    /**
+     * Set the crdate
+     *
+     * @param Date $crdate
+     * @return self
+     */
+    public function setCrdate(Date $crdate): self
+    {
+        $this->crdate = $crdate;
+        return $this;
+    }
+
+    /**
+     * Get the tstamp
+     *
+     * @return Date
+     */
+    public function getTstamp(): Date
+    {
+        return $this->tstamp;
+    }
+
+    /**
+     * Set the tstamp
+     *
+     * @param Date $tstamp
+     * @return self
+     */
+    public function setTstamp(Date $tstamp): self
+    {
+        $this->tstamp = $tstamp;
+        return $this;
+    }
+
     /**
      * Create an array representation of the event
      *
@@ -601,8 +600,8 @@ class Event extends AbstractEntity {
             'uid' => $this->uid,
             'place' => $this->place,
             'recurring' => $this->recurring,
-            'starttime' => $this->starttime->format('r'),
-            'endtime' => $this->endtime instanceof \DateTime ? $this->endtime->format('r') : '',
+            'starttime' => $this->starttime,
+            'endtime' => $this->endtime,
             'timezone' => $this->timezone,
             'wholeDay' => $this->wholeDay,
             'status' => $this->status,

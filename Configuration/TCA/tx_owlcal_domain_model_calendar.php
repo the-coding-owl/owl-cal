@@ -30,6 +30,16 @@ return [
                 'type' => 'input'
             ]
         ],
+        'identifier' => [
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
+        'version' => [
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
         'events' => [
             'config' => [
                 'default' => 0,

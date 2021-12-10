@@ -17,6 +17,9 @@
 
 namespace TheCodingOwl\OwlCal\Property\TypeConverter;
 
+use finfo;
+use TheCodingOwl\OwlCal\IcsLexer;
+use TheCodingOwl\OwlCal\IcsParser;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
 use TYPO3\CMS\Extbase\Validation\Error;
@@ -38,6 +41,21 @@ class IcsFileConverter extends AbstractTypeConverter {
      */
     public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
     {
+        if (!isset($source['name'],$source['tmp_name'],$source['type'],$source['error'],$source['size'])) {
+            return new Error('Upload data malformed', 1638803178);
+        }
+        if (substr($source['name'], -4) !== '.ics') {
+            return new Error('Given file is not an ICS file', 1638803423);
+        }
+        $finfo = new finfo(FILEINFO_MIME);
+        $mimeType = $finfo->file($source['tmp_name'], FILEINFO_MIME_TYPE);
+        if ($mimeType !== 'text/calendar') {
+            return new Error('Given file is not an ICS file', 1638803423);
+        }
+        $icsString = file_get_contents($source['tmp_name']);
+        $icsLexer = new IcsLexer($icsString);
+        $icsParser = new IcsParser($icsLexer->getStructure());
+        $calendar = $icsParser->parse();
         return new Error('blubb',123);
     }
 }

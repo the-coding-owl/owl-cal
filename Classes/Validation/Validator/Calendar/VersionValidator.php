@@ -17,32 +17,34 @@
 
 namespace TheCodingOwl\OwlCal\Validation\Validator;
 
-use TheCodingOwl\OwlCal\Exception\InvalidParameterTypeException;
+use TheCodingOwl\OwlCal\Domain\Model\Calendar;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /**
- * Validator that checks if the input is a valid DateTimeZone
- *
+ * This validator is used to validate the ical version of the calendar
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class DateTimeZoneValidator extends AbstractValidator {
+class VersionValidator extends AbstractValidator {
     /**
-     * Validate the given timezone against the list of timezones from PHP
+     * Checks if the given value is a valid version
      *
-     * @param string $value
+     * @param string $value The version number to check
      * @return void
-     * @throws InvalidParameterTypeException if the given value is not a string
      */
     public function isValid($value)
     {
-        if (!is_string($value)) {
-            throw new InvalidParameterTypeException('The given value is not a string!');
-        }
-        if ($value === '') {
+        if (empty($value)) {
             return;
         }
-        if (!in_array($value, \DateTimeZone::listIdentifiers())) {
-            $this->addError('The given value is not a valid Timezone!', 1637512930);
+        if (version_compare($value, Calendar::VERSION, '>')) {
+            $this->addError(
+                'The version number is to high, please use iCal version "' . Calendar::VERSION . '" or lower',
+                1639151614,
+                [
+                    'suppliedVersion' => $value,
+                    'maxVersion' => Calendar::VERSION
+                ]
+            );
         }
     }
 }

@@ -1,8 +1,9 @@
 CREATE TABLE tx_owlcal_domain_model_event (
-    `title` varchar(255) DEFAULT '' NOT NULL,
+    `summary` varchar(255) DEFAULT '' NOT NULL,
+    `identifier` varchar(255) DEFAULT '' NOT NULL,
     `place` varchar(255) DEFAULT '' NOT NULL,
     `recurring` TINYINT(3) DEFAULT '0' NOT NULL,
-    `recurrence_timing` int(11) unsigned DEFAULT '0' NOT NULL,
+    `recurrence_interval` varchar(20) DEFAULT '' NOT NULL,
     `recurring_times` int(11) DEFAULT '0' NOT NULL,
     `recurring_until` DATETIME DEFAULT NULL,
     `starttime` DATETIME DEFAULT '0001-01-01 00:00:00' NOT NULL,
@@ -21,6 +22,8 @@ CREATE TABLE tx_owlcal_domain_model_event (
 
 CREATE TABLE tx_owlcal_domain_model_calendar (
     `title` varchar(255) DEFAULT '' NOT NULL,
+    `identifier` varchar(255) DEFAULT '' NOT NULL,
+    `version` varchar(255) DEFAULT '' NOT NULL,
     `events` int(11) unsigned DEFAULT '0' NOT NULL,
     `owner` int(11) unsigned DEFAULT '0' NOT NULL,
     `color` varchar(7) DEFAULT '#000000' NOT NULL
@@ -36,10 +39,12 @@ CREATE TABLE tx_owlcal_domain_model_attendee (
 
 CREATE TABLE tx_owlcal_domain_model_reminder (
     `type` varchar(255) DEFAULT '' NOT NULL,
-    `timing` int(11) unsigned DEFAULT '0' NOT NULL,
+    `identifier` varchar(255) DEFAULT '' NOT NULL,
+    `description` text,
+    `interval` varchar(20) DEFAULT '' NOT NULL,
     `recurring` TINYINT(3) DEFAULT '0' NOT NULL,
     `recurrence_times` int(11) DEFAULT '0' NOT NULL,
-    `recurrence_timing` int(11) unsigned DEFAULT '0' NOT NULL,
+    `recurrence_interval` varchar(20) DEFAULT '' NOT NULL,
     `remindAt` varchar(255) DEFAULT '' NOT NULL,
     `event` int(11) unsigned DEFAULT '0' NOT NULL
 );
