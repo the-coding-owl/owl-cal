@@ -17,6 +17,6 @@
 
 namespace TheCodingOwl\OwlCal\Service;
 
-class CalendarService {
-    
+class CalendarService
+{
 }

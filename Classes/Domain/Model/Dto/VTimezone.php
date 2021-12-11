@@ -24,7 +24,8 @@ use TheCodingOwl\OwlCal\Domain\Model\Calendar;
  *
  * @author Kevin Ditscheid
  */
-class VTimezone {
+class VTimezone
+{
     /**
      * @var Calendar
      */

@@ -41,7 +41,8 @@ use TYPO3\CMS\Extbase\Annotation\Validate;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class EventController extends ActionController {
+class EventController extends ActionController
+{
     /**
      * @var ModuleTemplateFactory
      */
@@ -73,8 +74,7 @@ class EventController extends ActionController {
         EventRepository $eventRepository,
         UserRepository $userRepository,
         ViewSession $viewSession
-    )
-    {
+    ) {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->calendarRepository = $calendarRepository;
         $this->eventRepository = $eventRepository;
@@ -299,7 +299,9 @@ class EventController extends ActionController {
      */
     protected function setStatusList(): void
     {
-        $this->view->assign('status', [
+        $this->view->assign(
+            'status',
+            [
             Event::STATUS_NONE,
             Event::STATUS_TENTATIVE,
             Event::STATUS_CONFIRMED,

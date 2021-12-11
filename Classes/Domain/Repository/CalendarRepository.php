@@ -27,10 +27,11 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class CalendarRepository extends Repository {
+class CalendarRepository extends Repository
+{
     /**
      * Overwrite the createQuery function to disable storage page respect
-     * 
+     *
      * @return QueryInterface
      */
     public function createQuery()
@@ -42,7 +43,7 @@ class CalendarRepository extends Repository {
 
     /**
      * Import a new calendar by the given ics file
-     * 
+     *
      * @param ICS $icsFile A converted ics file
      * @return Calendar
      */

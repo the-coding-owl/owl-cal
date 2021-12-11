@@ -26,7 +26,8 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class TimingScaleValidator extends AbstractValidator {
+class TimingScaleValidator extends AbstractValidator
+{
     /**
      * Check if the input is a valid time scale
      *
@@ -42,7 +43,7 @@ class TimingScaleValidator extends AbstractValidator {
         if ($value === '') {
             return;
         }
-        if(!in_array($value, [
+        if (!in_array($value, [
             Timing::SCALE_DAYS,
             Timing::SCALE_HOURS,
             Timing::SCALE_MINUTES,

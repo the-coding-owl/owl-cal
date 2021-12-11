@@ -25,7 +25,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * Journal model
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Journal extends AbstractEntity implements AttachmentsInterface {
+class Journal extends AbstractEntity implements AttachmentsInterface
+{
     /**
      * @var ObjectStorage<Attachment>|null
      * @Lazy

@@ -24,7 +24,8 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  * This validator is used to validate the ical version of the calendar
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class VersionValidator extends AbstractValidator {
+class VersionValidator extends AbstractValidator
+{
     /**
      * Checks if the given value is a valid version
      *

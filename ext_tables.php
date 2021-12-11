@@ -1,6 +1,6 @@
 <?php
 
-(static function($extKey) {
+(static function ($extKey) {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         $extKey,
         'web',

@@ -17,7 +17,8 @@
 
 namespace TheCodingOwl\OwlCal\Ics\Parser;
 
-abstract class AbstractIcsParser implements ParserInterface {
+abstract class AbstractIcsParser implements ParserInterface
+{
     public const ICALOBJECT_BEGIN = 'BEGIN';
     public const ICALOBJECT_END = 'END';
 
@@ -41,7 +42,6 @@ abstract class AbstractIcsParser implements ParserInterface {
 
     protected function parseAttachments()
     {
-
     }
 
     abstract protected function parseProperty();

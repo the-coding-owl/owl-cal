@@ -24,7 +24,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * Interface for objects that can have attachments
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-interface AttachmentsInterface {
+interface AttachmentsInterface
+{
     public function getAttachments(): ObjectStorage;
     public function setAttachments(ObjectStorage $attachments): self;
     public function addAttachment(Attachment $attachment): self;

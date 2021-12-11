@@ -27,7 +27,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * Event model
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Event extends AbstractEntity implements AttachmentsInterface {
+class Event extends AbstractEntity implements AttachmentsInterface
+{
     public const STATUS_NONE = 'none';
     public const STATUS_TENTATIVE = 'tentative';
     public const STATUS_CONFIRMED = 'confirmed';

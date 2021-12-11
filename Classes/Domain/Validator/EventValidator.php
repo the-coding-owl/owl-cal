@@ -25,7 +25,8 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class EventValidator extends AbstractValidator {
+class EventValidator extends AbstractValidator
+{
     /**
      * Check the validity of the event
      *

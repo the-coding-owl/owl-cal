@@ -1,13 +1,13 @@
 <?php
 
-(static function($extKey) {
+(static function ($extKey) {
     $parserRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
         \TheCodingOwl\OwlCal\Ics\Parser\ParserRegistry::class
     );
     $parserRegistry->registerParser(
-            \TheCodingOwl\OwlCal\Ics\Parser\CalendarParser::class,
-            'VCALENDAR'
-        )->registerParser(
+        \TheCodingOwl\OwlCal\Ics\Parser\CalendarParser::class,
+        'VCALENDAR'
+    )->registerParser(
             \TheCodingOwl\OwlCal\Ics\Parser\EventParser::class,
             'VEVENT'
         )->registerParser(

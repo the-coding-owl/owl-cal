@@ -19,13 +19,13 @@ namespace TheCodingOwl\OwlCal\Ics\Parser;
 
 use TheCodingOwl\OwlCal\Domain\Model\Calendar;
 
-class CalendarParser implements ParserInterface {
+class CalendarParser implements ParserInterface
+{
     protected ParserInterface $parentParser;
     protected array $lines = [];
 
     public function parse(): Calendar
     {
-
     }
 
     public function addLine($line): self
@@ -55,4 +55,4 @@ class CalendarParser implements ParserInterface {
         $this->parentParser = $parentParser;
         return $this;
     }
- }
+}

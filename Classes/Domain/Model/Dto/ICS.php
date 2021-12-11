@@ -17,7 +17,8 @@
 
 namespace TheCodingOwl\OwlCal\Domain\Model\Dto;
 
-class ICS {
+class ICS
+{
     protected $filename = '';
     protected $content = '';
 }

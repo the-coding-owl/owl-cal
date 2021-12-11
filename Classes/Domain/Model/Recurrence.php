@@ -26,7 +26,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Recurrence extends AbstractEntity {
+class Recurrence extends AbstractEntity
+{
     /**
      * @var ObjectStorage<Date>|null
      */

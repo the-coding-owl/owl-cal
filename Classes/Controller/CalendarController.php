@@ -35,7 +35,8 @@ use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class CalendarController extends ActionController {
+class CalendarController extends ActionController
+{
     /**
      * @var ModuleTemplateFactory
      */
@@ -61,8 +62,7 @@ class CalendarController extends ActionController {
         CalendarRepository $calendarRepository,
         UserRepository $userRepository,
         ViewSession $viewSession
-    )
-    {
+    ) {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->calendarRepository = $calendarRepository;
         $this->userRepository = $userRepository;

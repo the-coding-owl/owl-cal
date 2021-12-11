@@ -20,7 +20,8 @@ namespace TheCodingOwl\OwlCal\Domain\Model;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 
-class User extends AbstractEntity {
+class User extends AbstractEntity
+{
     /**
      * @var string
      * @Validate("NotEmpty")

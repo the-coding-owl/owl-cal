@@ -24,7 +24,8 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  * This validator is used to validate the calendar scale
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class ScaleValidator extends AbstractValidator {
+class ScaleValidator extends AbstractValidator
+{
     /**
      * Checks the given value to be a valid scale
      *

@@ -29,7 +29,8 @@ use TYPO3\CMS\Extbase\Validation\Error;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class IcsFileConverter extends AbstractTypeConverter {
+class IcsFileConverter extends AbstractTypeConverter
+{
     /**
      * Convert the given ics file to a Calendar
      *
@@ -56,6 +57,6 @@ class IcsFileConverter extends AbstractTypeConverter {
         $icsLexer = new IcsLexer($icsString);
         $icsParser = new IcsParser($icsLexer->getStructure());
         $calendar = $icsParser->parse();
-        return new Error('blubb',123);
+        return new Error('blubb', 123);
     }
 }

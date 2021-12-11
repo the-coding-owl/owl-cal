@@ -19,7 +19,8 @@ namespace TheCodingOwl\OwlCal\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-class Date extends AbstractEntity {
+class Date extends AbstractEntity
+{
     protected $date;
     protected $time;
     protected $timezone;

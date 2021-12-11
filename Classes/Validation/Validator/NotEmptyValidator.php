@@ -25,7 +25,8 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class NotEmptyValidator extends AbstractValidator {
+class NotEmptyValidator extends AbstractValidator
+{
     /**
      * Checks if the given value is valid
      *

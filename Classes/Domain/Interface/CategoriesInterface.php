@@ -24,7 +24,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * Interface for objects that can have categories
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-interface CategoriesInterface {
+interface CategoriesInterface
+{
     public function getCategories(): ObjectStorage;
     public function setCategories(ObjectStorage $categories): self;
     public function addCategory(Category $category): self;

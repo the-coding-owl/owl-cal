@@ -33,7 +33,8 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class IcsParser {
+class IcsParser
+{
     /**
      * @var array
      */

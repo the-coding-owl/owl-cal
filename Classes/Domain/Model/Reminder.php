@@ -27,7 +27,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Reminder extends AbstractEntity implements AttachmentsInterface {
+class Reminder extends AbstractEntity implements AttachmentsInterface
+{
     public const TYPE_PUSH = 'push';
     public const TYPE_EMAIL = 'email';
 

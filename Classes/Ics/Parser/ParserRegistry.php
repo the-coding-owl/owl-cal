@@ -24,7 +24,8 @@ use TheCodingOwl\OwlCal\Ics\Parser\ParserInterface;
  * Registry for iCal object parsers
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class ParserRegistry implements SingletonInterface {
+class ParserRegistry implements SingletonInterface
+{
     protected array $parsers = [];
     protected array $propertyParsers = [];
 

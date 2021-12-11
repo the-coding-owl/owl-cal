@@ -26,7 +26,8 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class UserPermissionValidator extends AbstractValidator {
+class UserPermissionValidator extends AbstractValidator
+{
     /**
      * @var UserRepository
      */

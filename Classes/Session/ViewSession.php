@@ -28,7 +28,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  *
  * @author Kevin Ditscheid<kevin@the-coding-owl.de>
  */
-class ViewSession {
+class ViewSession
+{
     public const VIEW_MODE_NEXT = 'next';
     public const VIEW_MODE_MONTH = 'month';
     public const VIEW_MODE_WEEK = 'week';
@@ -67,7 +68,7 @@ class ViewSession {
     protected function loadSessionData(): void
     {
         $owlCalSettings = $this->beUser->getSessionData('tx_owlcal_view');
-        if (is_array($owlCalSettings)){
+        if (is_array($owlCalSettings)) {
             $currentDate = new \DateTime();
             $this->selectedCalendars = $owlCalSettings['selectedCalendars'] ?? [];
             $this->selectedMonth = $owlCalSettings['selectedMonth'] ?? $currentDate->format('n');
@@ -200,12 +201,12 @@ class ViewSession {
      */
     public function setViewMode(string $viewMode): self
     {
-        if(!in_array($viewMode, [
+        if (!in_array($viewMode, [
             self::VIEW_MODE_DAY,
             self::VIEW_MODE_MONTH,
             self::VIEW_MODE_NEXT,
             self::VIEW_MODE_WEEK
-        ])){
+        ])) {
             throw new UnsupportedViewModeException('The view mode "' . $viewMode . '" is not supported!');
         }
         $this->viewMode = $viewMode;

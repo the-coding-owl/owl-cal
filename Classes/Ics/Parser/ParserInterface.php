@@ -17,7 +17,8 @@
 
 namespace TheCodingOwl\OwlCal\Ics\Parser;
 
-interface ParserInterface {
+interface ParserInterface
+{
     public function getParentParser(): ParserInterface;
     public function setParentParser(ParserInterface $parentParser): self;
     public function parse();

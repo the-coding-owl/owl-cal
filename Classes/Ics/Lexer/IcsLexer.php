@@ -22,7 +22,8 @@ namespace TheCodingOwl\OwlCal;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class IcsLexer {
+class IcsLexer
+{
     private const PROPERTY_PREGMATCH = '/(?<property>[\w\-\;\=\/]+):(?<value>.*)/';
     /**
      * @var string

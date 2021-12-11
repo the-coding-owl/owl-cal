@@ -25,7 +25,8 @@ use TYPO3\CMS\Extbase\Validation\Error;
  * This converter takes a split datetime and combines them into a datetime object
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class CombinedDateTimeTypeConverter extends AbstractTypeConverter {
+class CombinedDateTimeTypeConverter extends AbstractTypeConverter
+{
     /**
      * Convert the given values to a proper DateTime object
      *
@@ -48,7 +49,7 @@ class CombinedDateTimeTypeConverter extends AbstractTypeConverter {
         }
         try {
             return new \DateTime($source['date'] . ' ' . $source['time']);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return new Error('No valid date!', 1637513016);
         }
     }

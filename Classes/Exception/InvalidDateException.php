@@ -26,6 +26,6 @@ use TYPO3\CMS\Core\Error\Exception;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class InvalidDateException extends Exception {
-
+class InvalidDateException extends Exception
+{
 }

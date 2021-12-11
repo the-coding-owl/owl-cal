@@ -26,7 +26,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * Calendar model
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Calendar extends AbstractEntity {
+class Calendar extends AbstractEntity
+{
     public const SCALE_DEFAULT = 'GREGORIAN';
     public const VERSION = '2.0';
 

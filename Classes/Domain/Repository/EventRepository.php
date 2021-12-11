@@ -24,7 +24,8 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class EventRepository extends Repository {
+class EventRepository extends Repository
+{
     /**
      * Overwrite the createQuery function to disable storage page respect
      */

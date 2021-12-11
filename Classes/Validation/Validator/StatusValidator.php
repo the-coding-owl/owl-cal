@@ -26,7 +26,8 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class StatusValidator extends AbstractValidator {
+class StatusValidator extends AbstractValidator
+{
     /**
      * Check if the input is a valid status
      *
@@ -42,7 +43,7 @@ class StatusValidator extends AbstractValidator {
         if ($value === '') {
             return;
         }
-        if(!in_array($value, [
+        if (!in_array($value, [
             Event::STATUS_CANCELED,
             Event::STATUS_CONFIRMED,
             Event::STATUS_NONE,

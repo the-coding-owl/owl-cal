@@ -26,7 +26,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * Todo model
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Todo extends AbstractEntity implements AttachmentsInterface {
+class Todo extends AbstractEntity implements AttachmentsInterface
+{
     /**
      * @var ObjectStorage<Attachment>|null
      * @Lazy

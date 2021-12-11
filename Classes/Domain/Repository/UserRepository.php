@@ -29,7 +29,8 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class UserRepository extends Repository {
+class UserRepository extends Repository
+{
     /**
      * @var DataMapper
      */

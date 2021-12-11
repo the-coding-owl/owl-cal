@@ -24,6 +24,6 @@ use TYPO3\CMS\Core\Error\Exception;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class UserNotFoundException extends Exception {
-
+class UserNotFoundException extends Exception
+{
 }

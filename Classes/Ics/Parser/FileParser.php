@@ -23,7 +23,8 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
  * File parser for the representation of attachments in ICS
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class FileParser implements ParserInterface {
+class FileParser implements ParserInterface
+{
     /**
      * The string representation of the file
      * @var string

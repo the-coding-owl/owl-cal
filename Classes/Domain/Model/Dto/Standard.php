@@ -22,7 +22,8 @@ namespace TheCodingOwl\OwlCal\Domain\Model\Dto;
  *
  * @author Kevin Ditscheid
  */
-class Standard {
+class Standard
+{
     /**
      * @var VTimezone
      */

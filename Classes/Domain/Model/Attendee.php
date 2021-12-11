@@ -25,7 +25,8 @@ use TYPO3\CMS\Extbase\Annotation\Validate;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Attendee extends AbstractEntity {
+class Attendee extends AbstractEntity
+{
     /**
      * @var string
      * @Validate("NotEmpty")

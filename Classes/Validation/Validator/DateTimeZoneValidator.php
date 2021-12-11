@@ -25,7 +25,8 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class DateTimeZoneValidator extends AbstractValidator {
+class DateTimeZoneValidator extends AbstractValidator
+{
     /**
      * Validate the given timezone against the list of timezones from PHP
      *

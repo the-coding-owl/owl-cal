@@ -24,7 +24,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  * Model representing an attachment
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Attachment extends AbstractEntity {
+class Attachment extends AbstractEntity
+{
     /**
      * @var FileReference|null
      */

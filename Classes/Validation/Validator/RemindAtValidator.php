@@ -28,7 +28,8 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  *
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class RemindAtValidator extends AbstractValidator {
+class RemindAtValidator extends AbstractValidator
+{
     /**
      * Check if the input is a valid value for the remindAt property
      *
@@ -50,7 +51,7 @@ class RemindAtValidator extends AbstractValidator {
             Reminder::AFTER_BEGINNING_OF_EVENT,
             Reminder::AFTER_END_OF_EVENT
         ];
-        if(!in_array($value, $validValues)) {
+        if (!in_array($value, $validValues)) {
             $this->addError(
                 'The given value is not a valid value for the remindAt property! Valid values are "%s".',
                 1637866215,
