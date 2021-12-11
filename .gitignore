@@ -1,3 +1,4 @@
 /vendor/
 /public/
 /var/
+composer.lock
