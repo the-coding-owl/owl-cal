@@ -22,7 +22,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 
 /**
  * Event model
@@ -106,16 +105,16 @@ class Event extends AbstractEntity implements AttachmentsInterface {
     protected ?ObjectStorage $reminders = null;
 
     /**
-     * @var ObjectStorage<FileReference>|null
+     * @var ObjectStorage<Attachment>|null
      * @Lazy
      */
-    protected ?ObjectStorage $files = null;
+    protected ?ObjectStorage $attachments = null;
 
     public function __construct()
     {
         $this->attendees = new ObjectStorage();
         $this->reminders = new ObjectStorage();
-        $this->files = new ObjectStorage();
+        $this->attachments = new ObjectStorage();
         $this->recurrences = new ObjectStorage();
     }
 
@@ -500,48 +499,48 @@ class Event extends AbstractEntity implements AttachmentsInterface {
     }
 
     /**
-     * Get the files
+     * Get the attachments
      *
      * @return ObjectStorage
      */
-    public function getFiles(): ObjectStorage
+    public function getAttachments(): ObjectStorage
     {
-        return $this->files ?? new ObjectStorage();
+        return $this->attachments ?? new ObjectStorage();
     }
 
     /**
-     * Set the files
+     * Set the attachments
      *
-     * @param ObjectStorage<FileReference> $files
+     * @param ObjectStorage<Attachment> $attachments
      * @return self
      */
-    public function setFiles(ObjectStorage $files): self
+    public function setAttachments(ObjectStorage $attachments): self
     {
-        $this->files = $files;
+        $this->attachments = $attachments;
         return $this;
     }
 
     /**
-     * Add the given file
+     * Add the given attachment
      *
-     * @param FileReference $file
+     * @param Attachment $attachment
      * @return self
      */
-    public function addFile(FileReference $file): self
+    public function addAttachment(Attachment $attachment): self
     {
-        $this->files->attach($file);
+        $this->attachments->attach($attachment);
         return $this;
     }
 
     /**
-     * Remove the given file
+     * Remove the given attachment
      *
-     * @param FileReference $fileToRemove
+     * @param Attachment $attachmentToRemove
      * @return self
      */
-    public function removeFile(FileReference $fileToRemove): self
+    public function removeAttachment(Attachment $attachmentToRemove): self
     {
-        $this->files->detach($fileToRemove);
+        $this->attachments->detach($attachmentToRemove);
         return $this;
     }
 
@@ -611,7 +610,7 @@ class Event extends AbstractEntity implements AttachmentsInterface {
             'icon' => $this->icon,
             'attendees' => $this->attendees->count(),
             'reminders' => $this->reminders->count(),
-            'files' => $this->files->count()
+            'attachments' => $this->attachments->count()
         ];
     }
 }

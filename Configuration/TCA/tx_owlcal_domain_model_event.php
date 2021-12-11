@@ -132,8 +132,15 @@ return [
                 'foreign_field' => 'event'
             ]
         ],
-        'files' => [
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('files')
+        'attachments' => [
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_owlcal_domain_model_attachment',
+                'foreign_table_field' => 'tablename',
+                'foreign_match_fields' => [
+                    'fieldname' => 'attachments'
+                ]
+            ]
         ]
     ],
     'palettes' => [],

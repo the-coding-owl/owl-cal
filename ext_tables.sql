@@ -17,7 +17,7 @@ CREATE TABLE tx_owlcal_domain_model_event (
     `calendar` int(11) unsigned DEFAULT '0' NOT NULL,
     `attendees` int(11) unsigned DEFAULT '0' NOT NULL,
     `reminders` int(11) unsigned DEFAULT '0' NOT NULL,
-    `files` int(11) unsigned DEFAULT '0' NOT NULL,
+    `attachments` int(11) unsigned DEFAULT '0' NOT NULL,
 );
 
 CREATE TABLE tx_owlcal_domain_model_calendar (
@@ -46,12 +46,14 @@ CREATE TABLE tx_owlcal_domain_model_reminder (
     `recurrence_times` int(11) DEFAULT '0' NOT NULL,
     `recurrence_interval` varchar(20) DEFAULT '' NOT NULL,
     `remindAt` varchar(255) DEFAULT '' NOT NULL,
-    `event` int(11) unsigned DEFAULT '0' NOT NULL
+    `event` int(11) unsigned DEFAULT '0' NOT NULL,
+    `attachments` int(11) unsigned DEFAULT '0' NOT NULL,
 );
 
-CREATE TABLE tx_owlcal_domain_model_timing (
-    `time` int(11) unsigned DEFAULT '0' NOT NULL,
-    `scale` varchar(255) DEFAULT '' NOT NULL,
-    `uid_foreign` int(11) unsigned DEFAULT '0' NOT NULL,
-    `foreign_table` varchar(255) DEFAULT '' NOT NULL
+CREATE TABLE tx_owlcal_domain_model_journal (
+    `attachments` int(11) unsigned DEFAULT '0' NOT NULL,
+);
+
+CREATE TABLE tx_owlcal_domain_model_todo (
+    `attachments` int(11) unsigned DEFAULT '0' NOT NULL,
 );

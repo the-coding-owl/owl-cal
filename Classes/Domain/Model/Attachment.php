@@ -17,74 +17,64 @@
 
 namespace TheCodingOwl\OwlCal\Domain\Model;
 
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Annotation\Validate;
 
 /**
- * Timing model
- *
+ * Model representing an attachment
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Timing extends AbstractEntity {
-    public const SCALE_MINUTES = 'minutes';
-    public const SCALE_HOURS = 'hours';
-    public const SCALE_DAYS = 'days';
-    public const SCALE_WEEKS = 'weeks';
-    public const SCALE_MONTHS = 'months';
-    public const SCALE_YEARS = 'years';
+class Attachment extends AbstractEntity {
     /**
-     * @var int
-     * @Validate("NotEmpty")
+     * @var FileReference|null
      */
-    protected int $time = 0;
+    protected ?FileReference $file = null;
     /**
      * @var string
-     * @Validate("NotEmpty")
-     * @Validate("TheCodingOwl\OwlCal\Validation\Validator\TimingScaleValidator")
      */
-    protected string $scale = '';
+    protected string $uri = '';
 
     /**
-     * Get the time
+     * Get the file
      *
-     * @return int
+     * @return FileReference|null
      */
-    public function getTime(): int
+    public function getFile(): ?FileReference
     {
-        return $this->time;
+        return $this->file;
     }
 
     /**
-     * Set the time
+     * Set the file
      *
-     * @param int $time
+     * @param FileReference $file
      * @return self
      */
-    public function setTime(int $time): self
+    public function setFile(FileReference $file): self
     {
-        $this->time = $time;
+        $this->file = $file;
         return $this;
     }
 
     /**
-     * Get the scale
+     * Get the uri
      *
      * @return string
      */
-    public function getScale(): string
+    public function getUri(): string
     {
-        return $this->scale;
+        return $this->uri;
     }
 
     /**
-     * Set the scale
+     * Set the uri
      *
-     * @param string $scale
+     * @param string $uri
      * @return self
      */
-    public function setScale(string $scale): self
+    public function setUri(string $uri): self
     {
-        $this->scale = $scale;
+        $this->uri = $uri;
         return $this;
     }
 }

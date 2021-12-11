@@ -28,59 +28,59 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class Todo extends AbstractEntity implements AttachmentsInterface {
     /**
-     * @var ObjectStorage<FileReference>|null
+     * @var ObjectStorage<Attachment>|null
      * @Lazy
      */
-    protected ?ObjectStorage $files = null;
+    protected ?ObjectStorage $attachments = null;
 
     public function __construct()
     {
-        $this->files = new ObjectStorage();
+        $this->attachments = new ObjectStorage();
     }
 
     /**
-     * Get the files
+     * Get the attachments
      *
      * @return ObjectStorage
      */
-    public function getFiles(): ObjectStorage
+    public function getAttachments(): ObjectStorage
     {
-        return $this->files ?? new ObjectStorage();
+        return $this->attachments ?? new ObjectStorage();
     }
 
     /**
-     * Set the files
+     * Set the attachments
      *
-     * @param ObjectStorage<FileReference> $files
+     * @param ObjectStorage<Attachment> $attachments
      * @return self
      */
-    public function setFiles(ObjectStorage $files): self
+    public function setAttachments(ObjectStorage $attachments): self
     {
-        $this->files = $files;
+        $this->attachments = $attachments;
         return $this;
     }
 
     /**
-     * Add the given file
+     * Add the given attachment
      *
-     * @param FileReference $file
+     * @param Attachment $attachment
      * @return self
      */
-    public function addFile(FileReference $file): self
+    public function addAttachment(Attachment $attachment): self
     {
-        $this->files->attach($file);
+        $this->attachments->attach($attachment);
         return $this;
     }
 
     /**
-     * Remove the given file
+     * Remove the given attachment
      *
-     * @param FileReference $fileToRemove
+     * @param Attachment $attachmentToRemove
      * @return self
      */
-    public function removeFile(FileReference $fileToRemove): self
+    public function removeAttachment(Attachment $attachmentToRemove): self
     {
-        $this->files->detach($fileToRemove);
+        $this->attachments->detach($attachmentToRemove);
         return $this;
     }
 }

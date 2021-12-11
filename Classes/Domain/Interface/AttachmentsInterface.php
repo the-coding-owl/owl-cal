@@ -17,7 +17,7 @@
 
 namespace TheCodingOwl\OwlCal\Domain\Interface;
 
-use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TheCodingOwl\OwlCal\Domain\Model\Attachment;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -25,8 +25,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
 interface AttachmentsInterface {
-    public function getFiles(): ObjectStorage;
-    public function setFiles(ObjectStorage $files): self;
-    public function addFile(FileReference $file): self;
-    public function removeFile(FileReference $fileToRemove): self;
+    public function getAttachments(): ObjectStorage;
+    public function setAttachments(ObjectStorage $attachments): self;
+    public function addAttachment(Attachment $attachment): self;
+    public function removeAttachment(Attachment $attachmentToRemove): self;
 }

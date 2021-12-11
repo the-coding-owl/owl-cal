@@ -25,54 +25,6 @@ return [
         'delete' => 'deleted'
     ],
     'columns' => [
-        'type' => [
-            'config' => [
-                'type' => 'input'
-            ]
-        ],
-        'identifier' => [
-            'config' => [
-                'type' => 'input'
-            ]
-        ],
-        'description' => [
-            'config' => [
-                'type' => 'text'
-            ]
-        ],
-        'interval' => [
-            'config' => [
-                'type' => 'input'
-            ]
-        ],
-        'recurring' => [
-            'config' => [
-                'type' => 'check',
-                'default' => 0
-            ]
-        ],
-        'recurrence_times' => [
-            'config' => [
-                'type' => 'input'
-            ]
-        ],
-        'recurrence_interval' => [
-            'config' => [
-                'type' => 'input'
-            ]
-        ],
-        'remindAt' => [
-            'config' => [
-                'type' => 'input'
-            ]
-        ],
-        'event' => [
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'tx_owlcal_domain_model_event'
-            ]
-        ],
         'attachments' => [
             'config' => [
                 'type' => 'inline',

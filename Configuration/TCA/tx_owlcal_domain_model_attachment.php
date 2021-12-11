@@ -25,14 +25,32 @@ return [
         'delete' => 'deleted'
     ],
     'columns' => [
-        'time' => [
+        'file' => [
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'files',
+                [
+                    'maxitems' => 1
+                ]
+            )
+        ],
+        'uri' => [
             'config' => [
                 'type' => 'input'
             ]
         ],
-        'scale' => [
+        'tablename' => [
             'config' => [
-                'type' => 'input'
+                'type' => 'passthrough'
+            ]
+        ],
+        'uid_foreign' => [
+            'config' => [
+                'type' => 'passthrough'
+            ]
+        ],
+        'fieldname' => [
+            'config' => [
+                'type' => 'passthrough'
             ]
         ]
     ],
