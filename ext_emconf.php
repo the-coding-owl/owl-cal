@@ -13,7 +13,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
- $EXT_CONF['owl_cal'] = [
+$EXT_CONF['owl_cal'] = [
     'title' => 'A calendar app',
     'description' => '',
     'category' => 'be',
