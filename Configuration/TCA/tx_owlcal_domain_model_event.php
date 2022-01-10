@@ -141,6 +141,24 @@ return [
                     'fieldname' => 'attachments'
                 ]
             ]
+        ],
+        'categories' => [
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'foreign_table' => 'tx_owlcal_domain_model_category',
+                'MM' => 'tx_owlcal_domain_model_event_category_mm'
+            ]
+        ],
+        'class' => [
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
+        'comment' => [
+            'config' => [
+                'type' => 'text'
+            ]
         ]
     ],
     'palettes' => [],

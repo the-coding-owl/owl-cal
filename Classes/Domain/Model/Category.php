@@ -15,19 +15,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace TheCodingOwl\OwlCal\Domain\Interface;
+namespace TheCodingOwl\OwlCal\Domain\Model;
 
-use TheCodingOwl\OwlCal\Domain\Model\Category;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 
 /**
- * Interface for objects that can have categories
+ * Model representing a category
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-interface CategoriesInterface
-{
-    public function getCategories(): ObjectStorage;
-    public function setCategories(ObjectStorage $categories): self;
-    public function addCategory(Category $category): self;
-    public function removeCategory(Category $categoryToRemove): self;
+class Category extends AbstractEntity {
+    /**
+     * @var string
+     * @Validate("NotEmpty")
+     */
+    protected string $name = '';
+
+    /**
+     * Get the name
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the name
+     *
+     * @param string $name
+     * @return self
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
 }

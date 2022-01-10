@@ -17,71 +17,11 @@
 
 namespace TheCodingOwl\OwlCal\Domain\Model;
 
-use TheCodingOwl\OwlCal\Domain\Interface\AttachmentsInterface;
-use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-
 /**
  * Todo model
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Todo extends AbstractEntity implements AttachmentsInterface
+class Todo extends AbstractEvent
 {
-    /**
-     * @var ObjectStorage<Attachment>|null
-     * @Lazy
-     */
-    protected ?ObjectStorage $attachments = null;
 
-    public function __construct()
-    {
-        $this->attachments = new ObjectStorage();
-    }
-
-    /**
-     * Get the attachments
-     *
-     * @return ObjectStorage
-     */
-    public function getAttachments(): ObjectStorage
-    {
-        return $this->attachments ?? new ObjectStorage();
-    }
-
-    /**
-     * Set the attachments
-     *
-     * @param ObjectStorage<Attachment> $attachments
-     * @return self
-     */
-    public function setAttachments(ObjectStorage $attachments): self
-    {
-        $this->attachments = $attachments;
-        return $this;
-    }
-
-    /**
-     * Add the given attachment
-     *
-     * @param Attachment $attachment
-     * @return self
-     */
-    public function addAttachment(Attachment $attachment): self
-    {
-        $this->attachments->attach($attachment);
-        return $this;
-    }
-
-    /**
-     * Remove the given attachment
-     *
-     * @param Attachment $attachmentToRemove
-     * @return self
-     */
-    public function removeAttachment(Attachment $attachmentToRemove): self
-    {
-        $this->attachments->detach($attachmentToRemove);
-        return $this;
-    }
 }

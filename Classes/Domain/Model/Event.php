@@ -17,8 +17,6 @@
 
 namespace TheCodingOwl\OwlCal\Domain\Model;
 
-use TheCodingOwl\OwlCal\Domain\Interface\AttachmentsInterface;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -27,7 +25,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * Event model
  * @author Kevin Ditscheid <kevin@the-coding-owl.de>
  */
-class Event extends AbstractEntity implements AttachmentsInterface
+class Event extends AbstractEvent
 {
     public const STATUS_NONE = 'none';
     public const STATUS_TENTATIVE = 'tentative';
@@ -76,10 +74,6 @@ class Event extends AbstractEntity implements AttachmentsInterface
     /**
      * @var string
      */
-    protected string $description = '';
-    /**
-     * @var string
-     */
     protected string $icon = '';
     /**
      * @var Date|null
@@ -105,17 +99,10 @@ class Event extends AbstractEntity implements AttachmentsInterface
      */
     protected ?ObjectStorage $reminders = null;
 
-    /**
-     * @var ObjectStorage<Attachment>|null
-     * @Lazy
-     */
-    protected ?ObjectStorage $attachments = null;
-
     public function __construct()
     {
         $this->attendees = new ObjectStorage();
         $this->reminders = new ObjectStorage();
-        $this->attachments = new ObjectStorage();
         $this->recurrences = new ObjectStorage();
     }
 
@@ -342,28 +329,6 @@ class Event extends AbstractEntity implements AttachmentsInterface
     }
 
     /**
-     * Get the description
-     *
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * Set the description
-     *
-     * @param string $description
-     * @return self
-     */
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-        return $this;
-    }
-
-    /**
      * Get the icon
      *
      * @return string
@@ -496,52 +461,6 @@ class Event extends AbstractEntity implements AttachmentsInterface
     public function removeReminder(Reminder $reminderToRemove): self
     {
         $this->reminders->detach($reminderToRemove);
-        return $this;
-    }
-
-    /**
-     * Get the attachments
-     *
-     * @return ObjectStorage
-     */
-    public function getAttachments(): ObjectStorage
-    {
-        return $this->attachments ?? new ObjectStorage();
-    }
-
-    /**
-     * Set the attachments
-     *
-     * @param ObjectStorage<Attachment> $attachments
-     * @return self
-     */
-    public function setAttachments(ObjectStorage $attachments): self
-    {
-        $this->attachments = $attachments;
-        return $this;
-    }
-
-    /**
-     * Add the given attachment
-     *
-     * @param Attachment $attachment
-     * @return self
-     */
-    public function addAttachment(Attachment $attachment): self
-    {
-        $this->attachments->attach($attachment);
-        return $this;
-    }
-
-    /**
-     * Remove the given attachment
-     *
-     * @param Attachment $attachmentToRemove
-     * @return self
-     */
-    public function removeAttachment(Attachment $attachmentToRemove): self
-    {
-        $this->attachments->detach($attachmentToRemove);
         return $this;
     }
 

@@ -18,6 +18,9 @@ CREATE TABLE tx_owlcal_domain_model_event (
     `attendees` int(11) unsigned DEFAULT '0' NOT NULL,
     `reminders` int(11) unsigned DEFAULT '0' NOT NULL,
     `attachments` int(11) unsigned DEFAULT '0' NOT NULL,
+    `categories` int(11) unsigned DEFAULT '0' NOT NULL,
+    `class` varchar(255) DEFAULT 'none' NOT NULL,
+    `comment`text,
 );
 
 CREATE TABLE tx_owlcal_domain_model_calendar (
@@ -52,8 +55,28 @@ CREATE TABLE tx_owlcal_domain_model_reminder (
 
 CREATE TABLE tx_owlcal_domain_model_journal (
     `attachments` int(11) unsigned DEFAULT '0' NOT NULL,
+    `categories` int(11) unsigned DEFAULT '0' NOT NULL,
+    `class` varchar(255) DEFAULT 'none' NOT NULL,
+    `comment`text,
+    `description` text,
 );
 
 CREATE TABLE tx_owlcal_domain_model_todo (
     `attachments` int(11) unsigned DEFAULT '0' NOT NULL,
+    `categories` int(11) unsigned DEFAULT '0' NOT NULL,
+    `class` varchar(255) DEFAULT 'none' NOT NULL,
+    `comment`text,
+    `description` text,
+);
+
+CREATE TABLE tx_owlcal_domain_model_attachment (
+    `file` int(11) unsigned DEFAULT '0' NOT NULL,
+    `uri` varchar(255) DEFAULT '' NOT NULL,
+    `tablename` varchar(255) DEFAULT '' NOT NULL,
+    `fieldname` varchar(255) DEFAULT '' NOT NULL,
+    `uid_foreign` int(11) unsigned DEFAULT '0' NOT NULL
+);
+
+CREATE TABLE tx_owlcal_domain_model_category (
+    `name` varchar(255) DEFAULT '' NOT NULL
 );

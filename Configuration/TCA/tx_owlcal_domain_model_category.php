@@ -25,37 +25,9 @@ return [
         'delete' => 'deleted'
     ],
     'columns' => [
-        'attachments' => [
-            'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'tx_owlcal_domain_model_attachment',
-                'foreign_table_field' => 'tablename',
-                'foreign_match_fields' => [
-                    'fieldname' => 'attachments'
-                ]
-            ]
-        ],
-        'categories' => [
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
-                'foreign_table' => 'tx_owlcal_domain_model_category',
-                'MM' => 'tx_owlcal_domain_model_journal_category_mm'
-            ]
-        ],
-        'class' => [
+        'name' => [
             'config' => [
                 'type' => 'input'
-            ]
-        ],
-        'comment' => [
-            'config' => [
-                'type' => 'text'
-            ]
-        ],
-        'description' => [
-            'config' => [
-                'type' => 'text'
             ]
         ]
     ],
